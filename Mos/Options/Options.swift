@@ -46,6 +46,13 @@ struct OptionItem {
         static let Allowlist = "allowlist"
         static let Applications = "applications"
     }
+
+    struct Cursor {
+        static let MouseSpeed = "cursorMouseSpeed"
+        static let TrackpadSpeed = "cursorTrackpadSpeed"
+        static let DisableMouseAcceleration = "cursorDisableMouseAcceleration"
+        static let AffectTrackpadAcceleration = "cursorAffectTrackpadAcceleration"
+    }
 }
 
 class Options {
@@ -74,6 +81,10 @@ class Options {
     }
     // 应用
     var application = OPTIONS_APPLICATION_DEFAULT() {
+        didSet { Options.shared.saveOptions() }
+    }
+    // 光标
+    var cursor = OPTIONS_CURSOR_DEFAULT() {
         didSet { Options.shared.saveOptions() }
     }
 
@@ -140,6 +151,15 @@ extension Options {
         // 应用
         application.allowlist = UserDefaults.standard.bool(forKey: OptionItem.Application.Allowlist)
         application.applications = loadApplicationsData()
+        // 光标
+        if let v = UserDefaults.standard.object(forKey: OptionItem.Cursor.MouseSpeed) as? Double {
+            cursor.mouseSpeed = v
+        }
+        if let v = UserDefaults.standard.object(forKey: OptionItem.Cursor.TrackpadSpeed) as? Double {
+            cursor.trackpadSpeed = v
+        }
+        cursor.disableMouseAcceleration = UserDefaults.standard.bool(forKey: OptionItem.Cursor.DisableMouseAcceleration)
+        cursor.affectTrackpadAcceleration = UserDefaults.standard.bool(forKey: OptionItem.Cursor.AffectTrackpadAcceleration)
         // 解锁
         readingOptionsLock = false
     }
@@ -180,6 +200,11 @@ extension Options {
             }
             // 按钮绑定
             saveButtonBindingsData()
+            // 光标
+            UserDefaults.standard.set(cursor.mouseSpeed, forKey: OptionItem.Cursor.MouseSpeed)
+            UserDefaults.standard.set(cursor.trackpadSpeed, forKey: OptionItem.Cursor.TrackpadSpeed)
+            UserDefaults.standard.set(cursor.disableMouseAcceleration, forKey: OptionItem.Cursor.DisableMouseAcceleration)
+            UserDefaults.standard.set(cursor.affectTrackpadAcceleration, forKey: OptionItem.Cursor.AffectTrackpadAcceleration)
         }
     }
 

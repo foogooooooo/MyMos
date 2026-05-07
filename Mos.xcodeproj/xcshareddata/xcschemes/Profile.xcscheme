@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "22142D9F1E25344E00E4BFBF"
-               BuildableName = "Mos.app"
+               BuildableName = "MyMos.app"
                BlueprintName = "Mos"
                ReferencedContainer = "container:Mos.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "22142D9F1E25344E00E4BFBF"
-            BuildableName = "Mos.app"
+            BuildableName = "MyMos.app"
             BlueprintName = "Mos"
             ReferencedContainer = "container:Mos.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "22142D9F1E25344E00E4BFBF"
-            BuildableName = "Mos.app"
+            BuildableName = "MyMos.app"
             BlueprintName = "Mos"
             ReferencedContainer = "container:Mos.xcodeproj">
          </BuildableReference>

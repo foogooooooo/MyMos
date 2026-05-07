@@ -33,7 +33,8 @@ struct PANEL_IDENTIFIER {
     static let scrollingWithApplication = "scrollingWithApplication"
     static let buttons = "buttons"
     static let application = "application"
-    static let list = [general, scrolling, buttons, application]
+    static let cursor = "cursor"
+    static let list = [general, scrolling, buttons, application, cursor]
 }
 let PANEL_PADDING = CGFloat(42.0) // 顶部导航栏高度
 let TOOLBAR_HEIGHT = CGFloat(80.0) // 偏好的 Toolbar 高度
@@ -56,6 +57,8 @@ struct POPOVER_IDENTIFIER {
 enum MosEventMarker {
     /// ShortcutExecutor.executeCustom 发出的合成键盘/修饰键事件
     static let syntheticCustom: Int64 = 0x4D6F73  // "Mos" ASCII
+    /// LinearPointerSynthesizer 合成的线性鼠标移动事件
+    static let syntheticCursor: Int64 = 0x4D6F7343  // "MosC" ASCII
 }
 
 // 事件处理应用
@@ -203,6 +206,26 @@ extension OPTIONS_SCROLL_DEFAULT: Equatable {
             l.smoothHorizontal == r.smoothHorizontal &&
             l.durationBeforeSimTrackpadLock == r.durationBeforeSimTrackpadLock
         )
+    }
+}
+
+// 光标 (鼠标指针速度调节 + 禁用加速)
+class OPTIONS_CURSOR_DEFAULT {
+    /// 鼠标设备的速度倍率, 范围 [0.25, 3.0], 1.0 = 不缩放
+    var mouseSpeed: Double = 1.0 {
+        didSet { Options.shared.saveOptions() }
+    }
+    /// 触控板设备的速度倍率, 范围 [0.25, 3.0], 1.0 = 不缩放
+    var trackpadSpeed: Double = 1.0 {
+        didSet { Options.shared.saveOptions() }
+    }
+    /// 启用后, 鼠标设备绕过系统加速曲线, 走 LinearPointerSynthesizer 线性管线
+    var disableMouseAcceleration: Bool = false {
+        didSet { Options.shared.saveOptions() }
+    }
+    /// 启用后, 触控板也走线性管线 (默认关闭, 避免影响系统手势)
+    var affectTrackpadAcceleration: Bool = false {
+        didSet { Options.shared.saveOptions() }
     }
 }
 

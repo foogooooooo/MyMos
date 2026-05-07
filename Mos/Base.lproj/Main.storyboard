@@ -70,6 +70,7 @@
                     <tabViewItems>
                         <tabViewItem identifier="general" image="SF.gearshape" id="Qwc-OE-zHR"/>
                         <tabViewItem identifier="scrolling" image="SF.circle.dotted.circle" id="P9R-tX-qfW"/>
+                        <tabViewItem identifier="cursor" image="SF.speedometer" id="CUR-VC-001"/>
                         <tabViewItem identifier="buttons" image="SF.button.horizontal.top.press" id="BTN-UI-123"/>
                         <tabViewItem identifier="application" image="SF.app.background.dotted" id="gfS-Ix-zI5"/>
                         <tabViewItem identifier="updates" image="SF.arrow.triangle.capsulepath" id="1sm-Qq-6GS"/>
@@ -88,6 +89,7 @@
                         <outlet property="tabView" destination="sxC-q7-Qs6" id="CNF-oh-eK6"/>
                         <segue destination="ITL-GD-CPd" kind="relationship" relationship="tabItems" id="z3c-tg-aDc"/>
                         <segue destination="iW5-CD-5OC" kind="relationship" relationship="tabItems" id="GA4-xY-65w"/>
+                        <segue destination="CUR-VC-100" kind="relationship" relationship="tabItems" id="CUR-SG-001"/>
                         <segue destination="BTN-VC-123" kind="relationship" relationship="tabItems" id="BTN-SG-123"/>
                         <segue destination="bga-wG-iim" kind="relationship" relationship="tabItems" id="QV9-il-C7g"/>
                         <segue destination="EWu-DP-7Gj" kind="relationship" relationship="tabItems" id="gsT-c8-cJ3"/>
@@ -215,6 +217,19 @@
                 <customObject id="KsC-af-ap0" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="460" y="1168"/>
+        </scene>
+        <!--Cursor-->
+        <scene sceneID="CUR-SC-001">
+            <objects>
+                <viewController title="Speed" storyboardIdentifier="cursor" id="CUR-VC-100" customClass="PreferencesCursorViewController" customModule="Mos" customModuleProvider="target" sceneMemberID="viewController">
+                    <visualEffectView key="view" blendingMode="behindWindow" material="toolTip" state="followsWindowActiveState" id="CUR-VW-100">
+                        <rect key="frame" x="0.0" y="0.0" width="460" height="270"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                    </visualEffectView>
+                </viewController>
+                <customObject id="CUR-FR-100" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="460" y="1500"/>
         </scene>
         <!--Buttons-->
         <scene sceneID="BTN-SC-123">

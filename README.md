@@ -1,83 +1,81 @@
 <p align="center">
-  <a href="http://mos.caldis.me/">
-    <img width="320" src="https://github.com/Caldis/Mos/blob/master/dmg/dmg-icon.png?raw=true">
-  </a>
+  <img width="240" src="https://github.com/Caldis/Mos/blob/master/dmg/dmg-icon.png?raw=true">
 </p>
 
+# MyMos
 
-# Mos
+> **基于 [Caldis/Mos](https://github.com/Caldis/Mos) 的个人衍生版**，在原版基础上加了**鼠标 / 触控板独立指针速度调节**和**禁用鼠标加速（线性映射）**功能。
+>
+> 滚动平滑、按键绑定、Logi 集成、每应用例外、快捷键、所有原版能力**一个不少**。
 
-![Xcode 9.0+](https://img.shields.io/badge/Xcode-9.0%2B-blue.svg)
-![Swift 4.0+](https://img.shields.io/badge/Swift-4.0%2B-orange.svg)
+[English](#english) | 中文
 
-一个用于在MacOS上平滑你的鼠标滚动效果的小工具, 让你的滚轮爽如触控板。
+---
 
-[中文](https://github.com/Caldis/Mos/blob/master/README.md) | [English](https://github.com/Caldis/Mos/blob/master/README.enUS.md) |
-[Русский](https://github.com/Caldis/Mos/blob/master/README.ru.md) |
-[Indonesia](https://github.com/Caldis/Mos/blob/master/README.id.md)
+## 与原版的区别
 
+原版 Mos 只处理滚轮，**不调指针速度也不绕过加速曲线**。这个 fork 加了一个新的「速度」标签页，能：
 
-## 主页
+| 功能 | 原版 Mos | MyMos |
+|------|:---:|:---:|
+| 平滑滚轮 | ✅ | ✅ |
+| 反向滚轮 / 按应用例外 / Logi 集成 / 快捷键 | ✅ | ✅ |
+| **鼠标指针速度独立调节** | ❌ | ✅ |
+| **触控板指针速度独立调节** | ❌ | ✅ |
+| **禁用鼠标加速（线性映射）** | ❌ | ✅ |
 
-http://mos.caldis.me/
+实现方式：在 `Mos/CursorCore/` 新增三个模块——
 
+- **PointingDeviceRegistry**：用 IOHIDManager 跟踪所有指针设备，按 `kCGMouseEventInstanceUserData` 区分鼠标 / 触控板
+- **CursorCore (L1)**：CGEventTap 拦截 `mouseMoved` / `mouseDragged`，按设备类别施加不同速度倍率
+- **LinearPointerSynthesizer (L2)**：勾选"禁用加速"时，从 IOHIDManager 取原始 HID delta 自行合成线性事件，绕开系统加速曲线
 
-## 特性
+L1 与 L2 完全和原版的 ScrollCore / ButtonCore / Logi 等模块解耦，**不修改任何原版逻辑**。
 
-- 平滑你的鼠标滚动体验, 并可自定义加速度与曲线, 也可按滚动方向分别处理
-- 支持分离触控板/鼠标事件, 可按垂直/水平方向分别设置平滑与反向
-- 支持自订鼠标快捷键, 绑定各种系统快捷键
-- 支持按应用处理不同的配置策略
+## 安装
 
-## 下载及安装
-
-### Homebrew安装
-
-Mos可通过[Homebrew](https://brew.sh)来安装:
-
-```bash
-$ brew install --cask mos@beta
-```
-
-应用将被安装至 `/Applications/Mos.app`。
-
-若有新版本,可用以下命令升级:
+需要 Xcode 16+ 自行编译：
 
 ```bash
-$ brew update
-$ brew upgrade mos@beta
+git clone https://github.com/foogooooooo/MyMos.git
+cd MyMos
+open Mos.xcodeproj
+# Xcode 自动解析 SPM 依赖（Charts、LoginServiceKit）
+# ⌘ + R 编译运行
 ```
 
-重新启动应用即可。
+首次运行需在「系统设置 → 隐私与安全 → 辅助功能」授权。
 
-### 手动安装
+## 使用
 
-- [GithubRelease](https://github.com/Caldis/Mos/releases/)
+状态栏图标 → 偏好设置 → **速度** 标签：
 
+- **鼠标**：拖滑杆或直接输入数值（0.25× ～ 3.0×）调指针速度
+- **禁用鼠标加速（线性）**：勾选后绕过 macOS 自带加速曲线
+- **触控板**：单独调速度（默认不动加速曲线，避免破坏触控手势）
 
-## 帮助
+## 致谢
 
-- [Wiki](https://github.com/Caldis/Mos/wiki)
+**所有的滚动平滑算法、按键架构、Logi 集成、本地化、UI 框架，全部来自原作者 [@Caldis](https://github.com/Caldis) 的 [Mos](https://github.com/Caldis/Mos) 项目。** 这个 fork 只是在他的肩膀上多搭了一层指针速度模块，**核心价值仍然 100% 归原作者**。
 
+如果你喜欢这个 fork 的功能，请优先去 [原项目仓库](https://github.com/Caldis/Mos) star / 赞助 / 致谢原作者。
 
-## 鸣谢
-- [Charts](https://github.com/danielgindi/Charts)
-- [iconfont.cn](http://www.iconfont.cn)
-- [LoginServiceKit](https://github.com/Clipy/LoginServiceKit)
-- [Smoothscroll-for-websites](https://github.com/galambalazs/smoothscroll-for-websites)
+## 协议
 
+继承原项目的 [Creative Commons BY-NC 4.0](./LICENSE) 协议：
+- 必须保留原作者署名
+- 禁止商业用途
+- 衍生作品须明确标注修改内容（本 README 已说明）
 
-## 贡献
+---
 
-如果您觉得 Mos 的本地化做的有任何不妥之处, 欢迎您提交任何关于文本修改的意见, 您可以通过提交 Github Issue 的方式告诉我们, 如果您善于编码, 我们非常欢迎您提交一个 PR !
+## English
 
-我们欢迎任何形式的贡献，有任何建议或意见您可以给我们 [提问](https://github.com/Caldis/Mos/issues)。
+This is a personal derivative of [Caldis/Mos](https://github.com/Caldis/Mos) that adds:
 
+- Independent pointer speed adjustment for mouse and trackpad
+- Disable mouse acceleration (linear pointer mapping, bypasses macOS acceleration curve)
 
-  ## LICENSE
+All credit for the original scroll smoothing engine, button system, Logi integration, and UI framework belongs to [@Caldis](https://github.com/Caldis). This fork only adds a new "Speed" preferences tab built on top of the existing architecture in `Mos/CursorCore/`.
 
-Copyright (c) 2017 Caldis rights reserved.
-
-[署名-非商业性使用协议](http://creativecommons.org/licenses/by-nc/3.0/cn/)
-
-And you can not upload it to the App Store.
+Licensed under CC BY-NC 4.0 — same as upstream. Attribution required, non-commercial use only.

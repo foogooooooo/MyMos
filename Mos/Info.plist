@@ -46,9 +46,7 @@
 	<string>Main</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
-	<key>SUFeedURL</key>
-	<string>https://mos.caldis.me/appcast.xml</string>
-	<key>SUPublicEDKey</key>
-	<string>zskqekl7thqvIANuR8SLKrfQ4LpqsZckKiDWfcD86JQ=</string>
+	<key>SUEnableAutomaticChecks</key>
+	<false/>
 </dict>
 </plist>

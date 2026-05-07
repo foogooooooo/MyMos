@@ -146,6 +146,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         LogiCenter.shared.stop()
         ScrollCore.shared.disable()
         ButtonCore.shared.disable()
+        CursorCore.shared.disable()
     }
     
     // 检查是否有访问 accessibility 权限, 如果有则启动滚动处理, 并结束计时器
@@ -159,6 +160,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 NSLog("First Initialization (Accessibility Authorization Needed)")
                 ScrollCore.shared.enable()
                 ButtonCore.shared.enable()
+                CursorCore.shared.enable()
                 LogiCenter.shared.start()
             }
         } else {
@@ -166,6 +168,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 NSLog("Regular Initialization")
                 ScrollCore.shared.enable()
                 ButtonCore.shared.enable()
+                CursorCore.shared.enable()
                 LogiCenter.shared.start()
             } else {
                 // 如果应用不在辅助权限列表内, 则弹出欢迎窗口
@@ -192,15 +195,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         LogiCenter.shared.stop()
         ScrollCore.shared.disable()
         ButtonCore.shared.disable()
+        CursorCore.shared.disable()
     }
     // 辅助功能权限在运行时被撤销 (可能由多个 Interceptor 同时触发, 此方法必须幂等)
     @objc func handleAccessibilityPermissionLost() {
         // 避免多个 Interceptor 同时触发导致重复处理
-        guard ScrollCore.shared.isActive || ButtonCore.shared.isActive else { return }
+        guard ScrollCore.shared.isActive || ButtonCore.shared.isActive || CursorCore.shared.isActive else { return }
         NSLog("Accessibility permission lost at runtime, disabling cores")
         LogiCenter.shared.stop()
         ScrollCore.shared.disable()
         ButtonCore.shared.disable()
+        CursorCore.shared.disable()
         Toast.show(
             NSLocalizedString("Accessibility permission lost, Mos has been paused", comment: ""),
             style: .warning,
