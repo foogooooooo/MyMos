@@ -24,6 +24,8 @@ class PointingDeviceRegistry {
     init() { NSLog("Module initialized: PointingDeviceRegistry") }
 
     private var hidManager: IOHIDManager?
+    private var hidThread: Thread?
+    private var hidRunLoop: CFRunLoop?
     private var deviceMap: [UInt64: PointingDeviceClass] = [:]
     private let mapLock = NSLock()
 
@@ -59,21 +61,45 @@ class PointingDeviceRegistry {
             let me = Unmanaged<PointingDeviceRegistry>.fromOpaque(ctx).takeUnretainedValue()
             me.handleInputValue(value)
         }, opaque)
-        // 必须用 commonModes 而不是 defaultMode. 否则当 MyMos 自己窗口处于
-        // 拖动/菜单等 tracking 状态时, 主 RunLoop 切换到 eventTrackingRunLoopMode,
-        // defaultMode 上的回调暂停 → HID 事件堆积 → 松手时一次性回放 = 光标跳变.
-        IOHIDManagerScheduleWithRunLoop(manager, CFRunLoopGetMain(), CFRunLoopMode.commonModes.rawValue)
-        let openResult = IOHIDManagerOpen(manager, IOOptionBits(kIOHIDOptionsTypeNone))
-        if openResult != kIOReturnSuccess {
-            NSLog("[PointingDeviceRegistry] IOHIDManagerOpen failed: 0x\(String(openResult, radix: 16))")
+        // IOHID 跑在独立后台线程上, 而不是主 RunLoop. 原因:
+        // 1. 鼠标手放上去就会持续微抖, HID 事件 100-1000Hz, 在主线程跑会和
+        //    AppKit / 中文 IME / 渲染竞争, 导致打字卡顿.
+        // 2. 之前用 main+commonModes 是为了修拖拽时光标跳, 但代价是主线程繁忙.
+        //    搬到后台线程后, RunLoop mode 切换的问题彻底不存在 (后台线程的 RunLoop
+        //    永远在 defaultMode 上跑).
+        // CGEvent.post 是线程安全的, 所以从后台线程合成事件没问题.
+        let semaphore = DispatchSemaphore(value: 0)
+        let thread = Thread { [weak self] in
+            guard let self = self else { semaphore.signal(); return }
+            guard let runLoop = CFRunLoopGetCurrent() else { semaphore.signal(); return }
+            self.hidRunLoop = runLoop
+            IOHIDManagerScheduleWithRunLoop(manager, runLoop, CFRunLoopMode.defaultMode.rawValue)
+            let openResult = IOHIDManagerOpen(manager, IOOptionBits(kIOHIDOptionsTypeNone))
+            if openResult != kIOReturnSuccess {
+                NSLog("[PointingDeviceRegistry] IOHIDManagerOpen failed: 0x\(String(openResult, radix: 16))")
+            }
+            semaphore.signal()
+            // 保持 RunLoop 一直跑, 每秒检查一次是否被 cancel
+            while !Thread.current.isCancelled {
+                CFRunLoopRunInMode(.defaultMode, 1.0, false)
+            }
+            IOHIDManagerUnscheduleFromRunLoop(manager, runLoop, CFRunLoopMode.defaultMode.rawValue)
+            IOHIDManagerClose(manager, IOOptionBits(kIOHIDOptionsTypeNone))
         }
+        thread.qualityOfService = .userInteractive
+        thread.name = "MyMos.HIDInput"
+        thread.start()
+        semaphore.wait()  // 等线程启动并完成 schedule + open
+
         hidManager = manager
+        hidThread = thread
     }
 
     func stop() {
-        guard let manager = hidManager else { return }
-        IOHIDManagerUnscheduleFromRunLoop(manager, CFRunLoopGetMain(), CFRunLoopMode.commonModes.rawValue)
-        IOHIDManagerClose(manager, IOOptionBits(kIOHIDOptionsTypeNone))
+        guard hidManager != nil else { return }
+        hidThread?.cancel()  // 后台线程会在下一个 1s tick 内退出并清理 manager
+        hidThread = nil
+        hidRunLoop = nil
         hidManager = nil
         mapLock.lock(); deviceMap.removeAll(); mapLock.unlock()
         inputHook = nil

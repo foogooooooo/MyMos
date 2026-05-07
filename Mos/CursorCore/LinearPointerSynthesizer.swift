@@ -22,9 +22,8 @@ class LinearPointerSynthesizer {
     init() { NSLog("Module initialized: LinearPointerSynthesizer") }
 
     private var isRunning = false
-    /// 虚拟光标位置, 与系统光标位置同步. 第一次合成前会被 syncFromSystem 重置.
+    /// 虚拟光标位置, 在 start() 时从系统当前光标同步, 之后由 raw HID delta 增量驱动.
     private var virtualLocation: CGPoint = .zero
-    private var hasSynced = false
     private let lock = NSLock()
 
     /// 把 HID 原始 count 转换到 "屏幕逻辑像素" 的基线缩放. macOS 默认加速曲线在
@@ -32,14 +31,21 @@ class LinearPointerSynthesizer {
     /// 让 1.0× 速度大致接近系统默认速度感受. 用户可再用 slider 微调.
     private let linearBaseScale: Double = 0.5
 
-    /// 由 PointingDeviceRegistry 在主 RunLoop 上调用. 此处全部在主线程, 不需额外加锁,
-    /// 但 isRunning / virtualLocation 仍用 lock 保护以防外部 stop() 与回调竞争.
+    /// PointingDeviceRegistry 现在把回调发到后台线程, 所以 inputHook 闭包以及 handleRawHID
+    /// 都跑在后台线程. NSEvent / NSScreen 在后台线程不安全, 所以本类内部一律改用线程安全的
+    /// CG / CoreGraphics API. 唯一仍可能在主线程跑的是 start(), 在那里完成初始 cursor 同步,
+    /// 让回调线程不必再读 NSEvent.mouseLocation.
     func start() {
         lock.lock(); defer { lock.unlock() }
         if isRunning { return }
         isRunning = true
-        hasSynced = false
-        // 注入 hook
+
+        // 在调用方 (主线程) 上同步一次系统光标位置. 之后所有回调都在后台线程,
+        // virtualLocation 由 raw HID delta 增量驱动, 不再访问 NSEvent / NSScreen.
+        if let event = CGEvent(source: nil) {
+            virtualLocation = event.location
+        }
+
         PointingDeviceRegistry.shared.inputHook = { [weak self] deviceID, cls, rawDx, rawDy in
             self?.handleRawHID(deviceID: deviceID, deviceClass: cls, rawDx: rawDx, rawDy: rawDy)
         }
@@ -72,13 +78,6 @@ class LinearPointerSynthesizer {
         }
 
         lock.lock()
-        if !hasSynced {
-            virtualLocation = NSEvent.mouseLocation
-            // NSEvent.mouseLocation 是以左下角为原点, 而 CGEvent 用左上角为原点,
-            // 在合成 CGEvent 时统一用 CG 坐标系. 这里转换一次.
-            virtualLocation = LinearPointerSynthesizer.flipToCGCoords(virtualLocation)
-            hasSynced = true
-        }
         // 应用线性映射 (含 baseScale 校准, 让 1.0× 接近系统默认速度)
         let factor = speed * linearBaseScale
         var newX = virtualLocation.x + CGFloat(Double(rawDx) * factor)
@@ -99,16 +98,17 @@ class LinearPointerSynthesizer {
     private func postSynthesizedMove(at point: CGPoint) {
         // 根据当前按下的鼠标按键, 合成对应的事件类型. 否则在按住按键拖动时,
         // 系统不会收到 "拖拽中" 信号, 导致拖动无效或高延迟.
-        let pressed = NSEvent.pressedMouseButtons
+        // CGEventSource.buttonState 线程安全, 可在 HID 后台线程调用;
+        // 而 NSEvent.pressedMouseButtons 不保证后台线程安全.
         let mouseType: CGEventType
         let mouseButton: CGMouseButton
-        if (pressed & (1 << 0)) != 0 {
+        if CGEventSource.buttonState(.combinedSessionState, button: .left) {
             mouseType = .leftMouseDragged
             mouseButton = .left
-        } else if (pressed & (1 << 1)) != 0 {
+        } else if CGEventSource.buttonState(.combinedSessionState, button: .right) {
             mouseType = .rightMouseDragged
             mouseButton = .right
-        } else if pressed != 0 {
+        } else if CGEventSource.buttonState(.combinedSessionState, button: .center) {
             mouseType = .otherMouseDragged
             mouseButton = .center
         } else {
@@ -127,28 +127,19 @@ class LinearPointerSynthesizer {
 
     // MARK: - 工具
 
-    /// 把 NS 坐标 (左下原点) 转为 CG 坐标 (左上原点).
-    private static func flipToCGCoords(_ p: CGPoint) -> CGPoint {
-        guard let primary = NSScreen.screens.first else { return p }
-        return CGPoint(x: p.x, y: primary.frame.height - p.y)
-    }
-
-    /// 全部屏幕的 union, 用 CG 坐标系 (左上原点).
+    /// 全部屏幕的 union, 已在 CG 坐标系 (左上原点).
+    /// 用 CGGetActiveDisplayList + CGDisplayBounds 是为了线程安全 — 这两个 API 可在
+    /// 任意线程调用, 而 NSScreen 不保证后台线程安全.
     private static func unifiedScreenBounds() -> CGRect {
-        let screens = NSScreen.screens
-        guard let primary = screens.first else { return .zero }
-        let primaryHeight = primary.frame.height
+        let maxDisplays: UInt32 = 16
+        var displays = [CGDirectDisplayID](repeating: 0, count: Int(maxDisplays))
+        var count: UInt32 = 0
+        let err = CGGetActiveDisplayList(maxDisplays, &displays, &count)
+        guard err == .success, count > 0 else { return .zero }
         var union = CGRect.null
-        for s in screens {
-            let f = s.frame
-            // f 是 NS 坐标. 转为 CG 坐标: y_cg = primaryH - (y_ns + h)
-            let cg = CGRect(
-                x: f.origin.x,
-                y: primaryHeight - (f.origin.y + f.height),
-                width: f.width,
-                height: f.height
-            )
-            union = union.isNull ? cg : union.union(cg)
+        for i in 0..<Int(count) {
+            let bounds = CGDisplayBounds(displays[i])  // 已是 CG 坐标
+            union = union.isNull ? bounds : union.union(bounds)
         }
         return union
     }
