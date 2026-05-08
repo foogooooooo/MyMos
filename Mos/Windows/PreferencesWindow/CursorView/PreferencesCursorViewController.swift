@@ -13,6 +13,7 @@ class PreferencesCursorViewController: NSViewController, NSTextFieldDelegate {
 
     // MARK: 控件
 
+    private let enabledCheck = NSButton(checkboxWithTitle: "", target: nil, action: nil)
     private let mouseSpeedSlider = NSSlider()
     private let mouseSpeedField = NSTextField()
     private let trackpadSpeedSlider = NSSlider()
@@ -48,6 +49,14 @@ class PreferencesCursorViewController: NSViewController, NSTextFieldDelegate {
     // MARK: UI 构建
 
     private func buildUI() {
+        // 总开关
+        enabledCheck.title = NSLocalizedString(
+            "Enable Speed Control",
+            comment: "Cursor master enable checkbox"
+        )
+        enabledCheck.target = self
+        enabledCheck.action = #selector(enabledChanged(_:))
+
         // 鼠标分组
         let mouseTitleRow = makeSectionTitle(
             symbol: "computermouse",
@@ -98,16 +107,27 @@ class PreferencesCursorViewController: NSViewController, NSTextFieldDelegate {
         affectTrackpadAccCheck.target = self
         affectTrackpadAccCheck.action = #selector(affectTrackpadAccChanged(_:))
 
-        // 提示
-        let hint = NSTextField(labelWithString: NSLocalizedString(
-            "Settings apply per-device. Linear mode bypasses macOS pointer acceleration curve.",
-            comment: "Cursor preferences description"
+        // 提示 1: 速度叠加规则
+        let hintSpeed = NSTextField(labelWithString: NSLocalizedString(
+            "Speed multiplier stacks on top of macOS Tracking Speed. For predictable results, set the system slider to default and tune here.",
+            comment: "Cursor preferences speed-stacking hint"
         ))
-        hint.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
-        hint.textColor = .tertiaryLabelColor
-        hint.lineBreakMode = .byWordWrapping
-        hint.maximumNumberOfLines = 2
-        hint.preferredMaxLayoutWidth = 410
+        hintSpeed.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
+        hintSpeed.textColor = .tertiaryLabelColor
+        hintSpeed.lineBreakMode = .byWordWrapping
+        hintSpeed.maximumNumberOfLines = 3
+        hintSpeed.preferredMaxLayoutWidth = 410
+
+        // 提示 2: 禁用加速的副作用
+        let hintLinear = NSTextField(labelWithString: NSLocalizedString(
+            "When Disable Mouse Acceleration is enabled, MyMos fully takes over mouse input — macOS Tracking Speed and Logi Options+ pointer settings stop affecting the mouse. Trackpad is unaffected.",
+            comment: "Cursor preferences linear-mode hint"
+        ))
+        hintLinear.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
+        hintLinear.textColor = .tertiaryLabelColor
+        hintLinear.lineBreakMode = .byWordWrapping
+        hintLinear.maximumNumberOfLines = 4
+        hintLinear.preferredMaxLayoutWidth = 410
 
         // 重置按钮
         resetButton.title = NSLocalizedString("Reset to Defaults", comment: "Cursor preferences reset button")
@@ -120,6 +140,8 @@ class PreferencesCursorViewController: NSViewController, NSTextFieldDelegate {
         resetRow.distribution = .fill
 
         let stack = NSStackView(views: [
+            enabledCheck,
+            spacer(height: 8),
             mouseTitleRow,
             mouseRow,
             disableMouseAccCheck,
@@ -128,7 +150,8 @@ class PreferencesCursorViewController: NSViewController, NSTextFieldDelegate {
             trackpadRow,
             affectTrackpadAccCheck,
             spacer(height: 8),
-            hint,
+            hintSpeed,
+            hintLinear,
             resetRow,
         ])
         stack.orientation = .vertical
@@ -216,6 +239,20 @@ class PreferencesCursorViewController: NSViewController, NSTextFieldDelegate {
         trackpadSpeedField.doubleValue = trackpad
         disableMouseAccCheck.state = c.disableMouseAcceleration ? .on : .off
         affectTrackpadAccCheck.state = c.affectTrackpadAcceleration ? .on : .off
+        enabledCheck.state = c.enabled ? .on : .off
+        applyEnabledStateToSubcontrols()
+    }
+
+    /// 总开关 off 时, 把下面所有子控件变灰禁用; on 时恢复.
+    private func applyEnabledStateToSubcontrols() {
+        let on = enabledCheck.state == .on
+        mouseSpeedSlider.isEnabled = on
+        mouseSpeedField.isEnabled = on
+        trackpadSpeedSlider.isEnabled = on
+        trackpadSpeedField.isEnabled = on
+        disableMouseAccCheck.isEnabled = on
+        affectTrackpadAccCheck.isEnabled = on
+        resetButton.isEnabled = on
     }
 
     private func clamp(_ v: Double) -> Double { min(speedMax, max(speedMin, v)) }
@@ -256,6 +293,12 @@ class PreferencesCursorViewController: NSViewController, NSTextFieldDelegate {
     @objc private func affectTrackpadAccChanged(_ sender: NSButton) {
         Options.shared.cursor.affectTrackpadAcceleration = (sender.state == .on)
         CursorCore.shared.refreshAccelerationOverride()
+    }
+
+    @objc private func enabledChanged(_ sender: NSButton) {
+        // 写 Options 后, didSet 里会调用 CursorCore.shared.refreshEnabled() 启停 tap
+        Options.shared.cursor.enabled = (sender.state == .on)
+        applyEnabledStateToSubcontrols()
     }
 
     @objc private func resetClicked(_ sender: NSButton) {

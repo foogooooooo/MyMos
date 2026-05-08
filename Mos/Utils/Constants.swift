@@ -211,6 +211,13 @@ extension OPTIONS_SCROLL_DEFAULT: Equatable {
 
 // 光标 (鼠标指针速度调节 + 禁用加速)
 class OPTIONS_CURSOR_DEFAULT {
+    /// 总开关: 关闭后 CursorCore 完全不拦截事件, 系统/Logi 等原生设置正常生效
+    var enabled: Bool = true {
+        didSet {
+            Options.shared.saveOptions()
+            CursorCore.shared.refreshEnabled()
+        }
+    }
     /// 鼠标设备的速度倍率, 范围 [0.25, 3.0], 1.0 = 不缩放
     var mouseSpeed: Double = 1.0 {
         didSet { Options.shared.saveOptions() }

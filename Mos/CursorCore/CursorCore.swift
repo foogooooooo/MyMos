@@ -74,6 +74,23 @@ class CursorCore {
         let rawDx = event.getIntegerValueField(.mouseEventDeltaX)
         let rawDy = event.getIntegerValueField(.mouseEventDeltaY)
 
+        // 死区: 单次原始 delta ≤ 1 像素时直接放行, 不做缩放也不改 location.
+        // 原因: 慢速精确移动时, 缩放会让 intDx/rawDx 出现 1px 不一致, 而我们
+        // 又必须改 event.location 来配平, 这会和 WindowServer 已渲染的光标位置
+        // 之间产生 1px 抖动. 在窗口 resize 边缘等敏感区域表现为光标形状闪烁,
+        // 在按下鼠标时表现为容易被识别成拖拽. 跳过小位移让慢速移动走系统原生
+        // 路径, 高速移动仍然按 speed 倍率缩放, 整体对手感影响最小.
+        if abs(rawDx) <= 1 && abs(rawDy) <= 1 {
+            // 顺手清掉累加器: 小位移意味着 "连续快速移动" 的假设被打断了,
+            // 之前积累的亚像素余量再用反而会引入小误差.
+            if deviceClass == .trackpad {
+                CursorCore.shared.trackpadAcc = (0, 0)
+            } else {
+                CursorCore.shared.mouseAcc = (0, 0)
+            }
+            return Unmanaged.passUnretained(event)
+        }
+
         // 选累加器
         var acc = (deviceClass == .trackpad)
             ? CursorCore.shared.trackpadAcc
@@ -109,6 +126,9 @@ class CursorCore {
 
     func enable() {
         if isActive { return }
+        // 总开关关闭时, enable() 是 no-op. 不拦截任何事件, 系统/Logi 等原生
+        // 设置完全生效, 等同于"MyMos 没装这部分功能"的状态.
+        if !Options.shared.cursor.enabled { return }
         isActive = true
 
         // 先启动设备登记 (L2 也依赖它, 必须先有)
@@ -154,6 +174,22 @@ class CursorCore {
             LinearPointerSynthesizer.shared.start()
         } else {
             LinearPointerSynthesizer.shared.stop()
+        }
+    }
+
+    /// Options.cursor.enabled 切换时调用. 关 → 立刻停 (释放 tap, 让原生设置接管),
+    /// 开 → 启动 (但只在系统已经启动且有辅助权限时, 走和 AppDelegate 同样的入口).
+    func refreshEnabled() {
+        let enabled = Options.shared.cursor.enabled
+        if enabled {
+            // 之前 disable 过, 现在重新启用. enable() 内部已检查权限/状态.
+            if !isActive {
+                enable()
+            }
+        } else {
+            if isActive {
+                disable()
+            }
         }
     }
 }

@@ -13205,6 +13205,42 @@
         }
       }
     },
+    "Enable Speed Control": {
+      "comment": "Cursor master enable checkbox",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enable Speed Control"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "启用速度控制"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "啟用速度控制"
+          }
+        },
+        "zh-Hant-HK": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "啟用速度控制"
+          }
+        },
+        "zh-Hant-TW": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "啟用速度控制"
+          }
+        }
+      }
+    },
     "Disable Mouse Acceleration (Linear)": {
       "comment": "Cursor disable mouse acceleration checkbox",
       "extractionState": "manual",
@@ -13349,38 +13385,74 @@
         }
       }
     },
-    "Settings apply per-device. Linear mode bypasses macOS pointer acceleration curve.": {
-      "comment": "Cursor preferences description",
+    "Speed multiplier stacks on top of macOS Tracking Speed. For predictable results, set the system slider to default and tune here.": {
+      "comment": "Cursor preferences speed-stacking hint",
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Settings apply per-device. Linear mode bypasses macOS pointer acceleration curve."
+            "value": "Speed multiplier stacks on top of macOS Tracking Speed. For predictable results, set the system slider to default and tune here."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "设置按设备单独生效。线性模式绕过 macOS 指针加速曲线。"
+            "value": "速度倍率与 macOS 跟踪速度叠加生效。建议把系统滑杆设为默认值后再在这里微调。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "設定按裝置分別生效。線性模式會繞過 macOS 指標加速曲線。"
+            "value": "速度倍率與 macOS 追蹤速度疊加生效。建議把系統滑桿設為預設值後再在這裡微調。"
           }
         },
         "zh-Hant-HK": {
           "stringUnit": {
             "state": "translated",
-            "value": "設定按裝置分別生效。線性模式會繞過 macOS 指標加速曲線。"
+            "value": "速度倍率與 macOS 追蹤速度疊加生效。建議把系統滑桿設為預設值後再在這裡微調。"
           }
         },
         "zh-Hant-TW": {
           "stringUnit": {
             "state": "translated",
-            "value": "設定按裝置分別生效。線性模式會繞過 macOS 指標加速曲線。"
+            "value": "速度倍率與 macOS 追蹤速度疊加生效。建議把系統滑桿設為預設值後再在這裡微調。"
+          }
+        }
+      }
+    },
+    "When Disable Mouse Acceleration is enabled, MyMos fully takes over mouse input — macOS Tracking Speed and Logi Options+ pointer settings stop affecting the mouse. Trackpad is unaffected.": {
+      "comment": "Cursor preferences linear-mode hint",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "When Disable Mouse Acceleration is enabled, MyMos fully takes over mouse input — macOS Tracking Speed and Logi Options+ pointer settings stop affecting the mouse. Trackpad is unaffected."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "勾选「禁用鼠标加速」后，MyMos 完全接管鼠标输入——macOS 跟踪速度和 Logi Options+ 的鼠标速度都将不再生效。触控板不受影响。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "勾選「停用滑鼠加速」後，MyMos 完全接管滑鼠輸入——macOS 追蹤速度與 Logi Options+ 的滑鼠速度都將不再生效。觸控板不受影響。"
+          }
+        },
+        "zh-Hant-HK": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "勾選「停用滑鼠加速」後，MyMos 完全接管滑鼠輸入——macOS 追蹤速度與 Logi Options+ 的滑鼠速度都將不再生效。觸控板不受影響。"
+          }
+        },
+        "zh-Hant-TW": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "勾選「停用滑鼠加速」後，MyMos 完全接管滑鼠輸入——macOS 追蹤速度與 Logi Options+ 的滑鼠速度都將不再生效。觸控板不受影響。"
           }
         }
       }

@@ -48,6 +48,7 @@ struct OptionItem {
     }
 
     struct Cursor {
+        static let Enabled = "cursorEnabled"
         static let MouseSpeed = "cursorMouseSpeed"
         static let TrackpadSpeed = "cursorTrackpadSpeed"
         static let DisableMouseAcceleration = "cursorDisableMouseAcceleration"
@@ -152,6 +153,9 @@ extension Options {
         application.allowlist = UserDefaults.standard.bool(forKey: OptionItem.Application.Allowlist)
         application.applications = loadApplicationsData()
         // 光标
+        if let v = UserDefaults.standard.object(forKey: OptionItem.Cursor.Enabled) as? Bool {
+            cursor.enabled = v
+        }
         if let v = UserDefaults.standard.object(forKey: OptionItem.Cursor.MouseSpeed) as? Double {
             cursor.mouseSpeed = v
         }
@@ -201,6 +205,7 @@ extension Options {
             // 按钮绑定
             saveButtonBindingsData()
             // 光标
+            UserDefaults.standard.set(cursor.enabled, forKey: OptionItem.Cursor.Enabled)
             UserDefaults.standard.set(cursor.mouseSpeed, forKey: OptionItem.Cursor.MouseSpeed)
             UserDefaults.standard.set(cursor.trackpadSpeed, forKey: OptionItem.Cursor.TrackpadSpeed)
             UserDefaults.standard.set(cursor.disableMouseAcceleration, forKey: OptionItem.Cursor.DisableMouseAcceleration)
