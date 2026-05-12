@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="24127" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="24765" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="24127"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="24765"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -10,21 +10,21 @@
         <scene sceneID="JPo-4y-FX3">
             <objects>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Mos" customModuleProvider="target"/>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="MyMos" customModuleProvider="target"/>
                 <application id="hnw-xV-0zn" sceneMemberID="viewController">
                     <menu key="mainMenu" title="Main Menu" systemMenu="main" id="AYu-sK-qS6"/>
                     <connections>
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="tYq-jF-nNM" customClass="StatusItemManager" customModule="Mos" customModuleProvider="target"/>
+                <customObject id="tYq-jF-nNM" customClass="StatusItemManager" customModule="MyMos" customModuleProvider="target"/>
             </objects>
             <point key="canvasLocation" x="1086" y="-85"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
             <objects>
-                <windowController storyboardIdentifier="monitorWindowController" showSeguePresentationStyle="single" id="B8D-0N-5wS" customClass="MonitorWindowController" customModule="Mos" customModuleProvider="target" sceneMemberID="viewController">
+                <windowController storyboardIdentifier="monitorWindowController" showSeguePresentationStyle="single" id="B8D-0N-5wS" customClass="MonitorWindowController" customModule="MyMos" customModuleProvider="target" sceneMemberID="viewController">
                     <window key="window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" visibleAtLaunch="NO" animationBehavior="default" titlebarAppearsTransparent="YES" id="IQv-IB-iLA" userLabel="Monitor Window">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" fullSizeContentView="YES"/>
                         <rect key="contentRect" x="0.0" y="0.0" width="480" height="271"/>
@@ -45,7 +45,7 @@
         <!--Window Controller-->
         <scene sceneID="d5U-6w-uQ6">
             <objects>
-                <windowController storyboardIdentifier="preferencesWindowController" showSeguePresentationStyle="single" id="7TR-R5-fGE" customClass="PreferencesWindowController" customModule="Mos" customModuleProvider="target" sceneMemberID="viewController">
+                <windowController storyboardIdentifier="preferencesWindowController" showSeguePresentationStyle="single" id="7TR-R5-fGE" customClass="PreferencesWindowController" customModule="MyMos" customModuleProvider="target" sceneMemberID="viewController">
                     <window key="window" title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" titlebarAppearsTransparent="YES" id="cvF-hf-KVW">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
                         <rect key="contentRect" x="13" y="0.0" width="450" height="315"/>
@@ -66,7 +66,7 @@
         <!--Preferences Tab View Controller-->
         <scene sceneID="fde-aU-5x8">
             <objects>
-                <tabViewController showSeguePresentationStyle="single" selectedTabViewItemIndex="0" tabStyle="toolbar" id="0iY-5N-JBV" customClass="PreferencesTabViewController" customModule="Mos" customModuleProvider="target" sceneMemberID="viewController">
+                <tabViewController showSeguePresentationStyle="single" selectedTabViewItemIndex="0" tabStyle="toolbar" id="0iY-5N-JBV" customClass="PreferencesTabViewController" customModule="MyMos" customModuleProvider="target" sceneMemberID="viewController">
                     <tabViewItems>
                         <tabViewItem identifier="general" image="SF.gearshape" id="Qwc-OE-zHR"/>
                         <tabViewItem identifier="scrolling" image="SF.circle.dotted.circle" id="P9R-tX-qfW"/>
@@ -103,7 +103,7 @@
         <!--General-->
         <scene sceneID="5zC-sP-JZj">
             <objects>
-                <viewController title="General" storyboardIdentifier="general" id="ITL-GD-CPd" customClass="PreferencesGeneralViewController" customModule="Mos" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="General" storyboardIdentifier="general" id="ITL-GD-CPd" customClass="PreferencesGeneralViewController" customModule="MyMos" customModuleProvider="target" sceneMemberID="viewController">
                     <visualEffectView key="view" blendingMode="behindWindow" material="toolTip" state="followsWindowActiveState" id="LZw-qp-NWH">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="105"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
@@ -218,10 +218,10 @@
             </objects>
             <point key="canvasLocation" x="460" y="1168"/>
         </scene>
-        <!--Cursor-->
+        <!--Speed-->
         <scene sceneID="CUR-SC-001">
             <objects>
-                <viewController title="Speed" storyboardIdentifier="cursor" id="CUR-VC-100" customClass="PreferencesCursorViewController" customModule="Mos" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Speed" storyboardIdentifier="cursor" id="CUR-VC-100" customClass="PreferencesCursorViewController" customModule="MyMos" customModuleProvider="target" sceneMemberID="viewController">
                     <visualEffectView key="view" blendingMode="behindWindow" material="toolTip" state="followsWindowActiveState" id="CUR-VW-100">
                         <rect key="frame" x="0.0" y="0.0" width="460" height="270"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
@@ -234,7 +234,7 @@
         <!--Buttons-->
         <scene sceneID="BTN-SC-123">
             <objects>
-                <viewController title="Buttons" storyboardIdentifier="buttons" id="BTN-VC-123" customClass="PreferencesButtonsViewController" customModule="Mos" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Buttons" storyboardIdentifier="buttons" id="BTN-VC-123" customClass="PreferencesButtonsViewController" customModule="MyMos" customModuleProvider="target" sceneMemberID="viewController">
                     <visualEffectView key="view" blendingMode="behindWindow" material="toolTip" state="followsWindowActiveState" id="BTN-VW-123">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="321"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
@@ -299,7 +299,7 @@
                                                     </textFieldCell>
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES"/>
                                                     <prototypeCellViews>
-                                                        <tableCellView id="zV9-2l-l6k" customClass="ButtonTableCellView" customModule="Mos" customModuleProvider="target">
+                                                        <tableCellView id="zV9-2l-l6k" customClass="ButtonTableCellView" customModule="MyMos" customModuleProvider="target">
                                                             <rect key="frame" x="18" y="0.0" width="413" height="52"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
@@ -422,7 +422,7 @@
                                     <constraint firstItem="eyA-cJ-hnJ" firstAttribute="centerX" secondItem="skg-W8-gS0" secondAttribute="centerX" id="s45-1k-j6V"/>
                                 </constraints>
                             </customView>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="uuZ-tE-wlr" customClass="PrimaryButton" customModule="Mos" customModuleProvider="target">
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="uuZ-tE-wlr" customClass="PrimaryButton" customModule="MyMos" customModuleProvider="target">
                                 <rect key="frame" x="40" y="38" width="370" height="60"/>
                                 <subviews>
                                     <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QAD-KS-uBx">
@@ -558,7 +558,7 @@
         <scene sceneID="UqT-28-MT6">
             <objects>
                 <customObject id="l11-a0-4Xa" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-                <viewController title="Application" storyboardIdentifier="application" id="bga-wG-iim" customClass="PreferencesApplicationViewController" customModule="Mos" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Application" storyboardIdentifier="application" id="bga-wG-iim" customClass="PreferencesApplicationViewController" customModule="MyMos" customModuleProvider="target" sceneMemberID="viewController">
                     <visualEffectView key="view" wantsLayer="YES" blendingMode="behindWindow" material="toolTip" state="followsWindowActiveState" id="jc3-9p-Bfo">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="321"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -843,7 +843,7 @@
                                     <constraint firstItem="ceK-ED-PfL" firstAttribute="leading" secondItem="2yz-Bt-IMN" secondAttribute="leading" constant="6" id="jhO-JU-hzS"/>
                                 </constraints>
                             </customView>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="lhT-1U-5Xh" customClass="PrimaryButton" customModule="Mos" customModuleProvider="target">
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="lhT-1U-5Xh" customClass="PrimaryButton" customModule="MyMos" customModuleProvider="target">
                                 <rect key="frame" x="40" y="38" width="370" height="60"/>
                                 <subviews>
                                     <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MPG-5z-OT3">
@@ -935,7 +935,7 @@
         <!--Application Allowlist hint-->
         <scene sceneID="57E-oo-PEW">
             <objects>
-                <viewController id="o12-9v-Ej5" userLabel="Application Allowlist hint" customClass="AdaptivePopover" customModule="Mos" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="o12-9v-Ej5" userLabel="Application Allowlist hint" customClass="AdaptivePopover" customModule="MyMos" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="wdx-Jb-jwG">
                         <rect key="frame" x="0.0" y="0.0" width="224" height="62"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -964,7 +964,7 @@
         <!--Updates-->
         <scene sceneID="VTW-lQ-Mfk">
             <objects>
-                <viewController title="Updates" storyboardIdentifier="updates" id="EWu-DP-7Gj" customClass="PreferencesUpdatesViewController" customModule="Mos" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Updates" storyboardIdentifier="updates" id="EWu-DP-7Gj" customClass="PreferencesUpdatesViewController" customModule="MyMos" customModuleProvider="target" sceneMemberID="viewController">
                     <visualEffectView key="view" blendingMode="behindWindow" material="toolTip" state="followsWindowActiveState" id="YxW-TX-zxt">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="120"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1062,13 +1062,13 @@
         <scene sceneID="Fd7-iR-8pW">
             <objects>
                 <customObject id="T8g-3J-WxE" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-                <viewController title="Scrolling" storyboardIdentifier="scrolling" id="iW5-CD-5OC" customClass="PreferencesScrollingViewController" customModule="Mos" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Scrolling" storyboardIdentifier="scrolling" id="iW5-CD-5OC" customClass="PreferencesScrollingViewController" customModule="MyMos" customModuleProvider="target" sceneMemberID="viewController">
                     <visualEffectView key="view" wantsLayer="YES" blendingMode="behindWindow" material="toolTip" state="followsWindowActiveState" id="Jsi-ke-bNZ">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="501"/>
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="537"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" verifyAmbiguity="off" translatesAutoresizingMaskIntoConstraints="NO" id="DQH-h2-1Zk">
-                                <rect key="frame" x="18" y="467" width="140" height="14"/>
+                                <rect key="frame" x="18" y="503" width="140" height="14"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="136" id="uRN-Fz-sJm"/>
                                 </constraints>
@@ -1079,7 +1079,7 @@
                                 </textFieldCell>
                             </textField>
                             <button translatesAutoresizingMaskIntoConstraints="NO" id="1Hp-EF-wSq">
-                                <rect key="frame" x="171" y="467" width="178" height="14"/>
+                                <rect key="frame" x="171" y="503" width="178" height="14"/>
                                 <buttonCell key="cell" type="check" title="Enable seamless scrolling" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="bsq-Pe-sDy">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -1092,7 +1092,7 @@
                                 </connections>
                             </button>
                             <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" verifyAmbiguity="off" translatesAutoresizingMaskIntoConstraints="NO" id="aV7-KP-bgw">
-                                <rect key="frame" x="18" y="435" width="140" height="14"/>
+                                <rect key="frame" x="18" y="471" width="140" height="14"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="136" id="YBO-Nh-6aE"/>
                                 </constraints>
@@ -1103,7 +1103,7 @@
                                 </textFieldCell>
                             </textField>
                             <button verticalHuggingPriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="PIE-3y-0sa">
-                                <rect key="frame" x="171" y="435" width="153" height="14"/>
+                                <rect key="frame" x="171" y="471" width="153" height="14"/>
                                 <buttonCell key="cell" type="check" title="Invert wheel direction" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="vjK-Rg-us9">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -1116,13 +1116,13 @@
                                 </connections>
                             </button>
                             <box verticalHuggingPriority="750" verticalCompressionResistancePriority="751" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="rQj-g8-Y0N">
-                                <rect key="frame" x="20" y="412" width="410" height="5"/>
+                                <rect key="frame" x="20" y="448" width="410" height="5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="410" id="7Ge-xF-ZVC"/>
                                 </constraints>
                             </box>
                             <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mKO-0m-Vb0">
-                                <rect key="frame" x="18" y="375" width="140" height="14"/>
+                                <rect key="frame" x="18" y="411" width="140" height="14"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="136" id="rlL-do-7ec"/>
                                 </constraints>
@@ -1133,7 +1133,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="45l-vw-E0o" userLabel="Dash Key Description">
-                                <rect key="frame" x="169" y="353" width="263" height="11"/>
+                                <rect key="frame" x="169" y="389" width="263" height="11"/>
                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Increase scrolling speed on long pages" id="Z59-tN-QjE">
                                     <font key="font" metaFont="miniSystem"/>
                                     <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
@@ -1141,7 +1141,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9Nm-TC-llN">
-                                <rect key="frame" x="18" y="322" width="140" height="14"/>
+                                <rect key="frame" x="18" y="358" width="140" height="14"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="136" id="i4m-8K-DpA"/>
                                 </constraints>
@@ -1152,7 +1152,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="gSx-dp-Tvn" userLabel="Toggle Key Description">
-                                <rect key="frame" x="169" y="300" width="263" height="11"/>
+                                <rect key="frame" x="169" y="336" width="263" height="11"/>
                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Change vertical scrolling to horizontal scrolling" id="KnM-kA-wn5">
                                     <font key="font" metaFont="miniSystem"/>
                                     <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
@@ -1160,7 +1160,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kMQ-Oj-Bvd">
-                                <rect key="frame" x="18" y="269" width="140" height="14"/>
+                                <rect key="frame" x="18" y="305" width="140" height="14"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="136" id="y87-5B-rDj"/>
                                 </constraints>
@@ -1171,7 +1171,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="1eQ-Un-ZLh" userLabel="Block Key Description">
-                                <rect key="frame" x="169" y="247" width="158" height="11"/>
+                                <rect key="frame" x="169" y="283" width="158" height="11"/>
                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Temporarily block smooth scrolling" id="iki-Jk-qSr">
                                     <font key="font" metaFont="miniSystem"/>
                                     <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
@@ -1179,13 +1179,13 @@
                                 </textFieldCell>
                             </textField>
                             <box verticalHuggingPriority="750" verticalCompressionResistancePriority="751" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="iLA-i9-HEO">
-                                <rect key="frame" x="20" y="224" width="410" height="5"/>
+                                <rect key="frame" x="20" y="260" width="410" height="5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="410" id="dvS-fP-hkt"/>
                                 </constraints>
                             </box>
                             <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zKw-pT-YRj">
-                                <rect key="frame" x="18" y="192" width="140" height="14"/>
+                                <rect key="frame" x="18" y="228" width="140" height="14"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="136" id="DAn-rh-ycF"/>
                                 </constraints>
@@ -1196,7 +1196,7 @@
                                 </textFieldCell>
                             </textField>
                             <slider wantsLayer="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TU2-J4-KYA">
-                                <rect key="frame" x="171" y="191" width="160" height="15"/>
+                                <rect key="frame" x="171" y="227" width="160" height="15"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="160" id="oWf-Q1-9W7"/>
                                     <constraint firstAttribute="height" constant="15" id="srb-fM-rp2"/>
@@ -1207,7 +1207,7 @@
                                 </connections>
                             </slider>
                             <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="749" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lh7-BV-xfD" userLabel="Scroll Step Input">
-                                <rect key="frame" x="339" y="188" width="62" height="22"/>
+                                <rect key="frame" x="339" y="224" width="62" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="22" id="LJv-CS-oLB"/>
                                 </constraints>
@@ -1228,14 +1228,14 @@
                                 </connections>
                             </textField>
                             <stepper wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="a9X-MM-XsO" userLabel="Scroll Step Stepper">
-                                <rect key="frame" x="409" y="189" width="13" height="20"/>
+                                <rect key="frame" x="409" y="225" width="13" height="20"/>
                                 <stepperCell key="cell" controlSize="mini" continuous="YES" alignment="left" increment="0.01" minValue="0.01" maxValue="100" doubleValue="35" id="l5w-H3-FUv"/>
                                 <connections>
                                     <action selector="scrollStepStepperChange:" target="iW5-CD-5OC" id="LSH-W5-eWh"/>
                                 </connections>
                             </stepper>
                             <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ET3-bp-TfD" userLabel="Scroll Step Description">
-                                <rect key="frame" x="169" y="174" width="263" height="11"/>
+                                <rect key="frame" x="169" y="210" width="263" height="11"/>
                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Sets the minimum scroll distance" id="Jan-OY-m70">
                                     <font key="font" metaFont="miniSystem"/>
                                     <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
@@ -1243,7 +1243,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fAk-N9-naX">
-                                <rect key="frame" x="18" y="138" width="140" height="14"/>
+                                <rect key="frame" x="18" y="174" width="140" height="14"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="136" id="Axk-Bu-mvb"/>
                                 </constraints>
@@ -1254,14 +1254,14 @@
                                 </textFieldCell>
                             </textField>
                             <slider wantsLayer="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="YRx-cZ-Ol5">
-                                <rect key="frame" x="171" y="136" width="160" height="18"/>
+                                <rect key="frame" x="171" y="172" width="160" height="18"/>
                                 <sliderCell key="cell" controlSize="small" state="on" alignment="left" minValue="1" maxValue="10" doubleValue="3" tickMarkPosition="above" numberOfTickMarks="5" sliderType="linear" id="ovU-ME-3wf"/>
                                 <connections>
                                     <action selector="scrollSpeedSliderChange:" target="iW5-CD-5OC" id="eDS-0S-PZt"/>
                                 </connections>
                             </slider>
                             <textField wantsLayer="YES" focusRingType="none" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nbg-QY-VXM" userLabel="Scroll Speed Input">
-                                <rect key="frame" x="339" y="134" width="62" height="22"/>
+                                <rect key="frame" x="339" y="170" width="62" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="22" id="fhi-bo-1m6"/>
                                 </constraints>
@@ -1283,14 +1283,14 @@
                                 </connections>
                             </textField>
                             <stepper wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="S6c-kz-cql" userLabel="Scroll Speed Stepper">
-                                <rect key="frame" x="409" y="135" width="13" height="20"/>
+                                <rect key="frame" x="409" y="171" width="13" height="20"/>
                                 <stepperCell key="cell" controlSize="mini" continuous="YES" alignment="left" increment="0.01" minValue="1" maxValue="10" doubleValue="3" id="k4I-Zi-yIR"/>
                                 <connections>
                                     <action selector="scrollSpeedStepperChange:" target="iW5-CD-5OC" id="kbJ-4c-Epc"/>
                                 </connections>
                             </stepper>
                             <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="U62-ME-IJk" userLabel="Scroll Speed Description">
-                                <rect key="frame" x="169" y="119" width="263" height="11"/>
+                                <rect key="frame" x="169" y="155" width="263" height="11"/>
                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Sets scrolling acceleration" id="B3O-iI-E7v">
                                     <font key="font" metaFont="miniSystem"/>
                                     <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
@@ -1298,7 +1298,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="z8H-6h-kRv">
-                                <rect key="frame" x="18" y="83" width="140" height="14"/>
+                                <rect key="frame" x="18" y="119" width="140" height="14"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="136" id="ttO-Mn-fbd"/>
                                 </constraints>
@@ -1309,14 +1309,14 @@
                                 </textFieldCell>
                             </textField>
                             <slider wantsLayer="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ILS-hD-J9N" userLabel="Scroll Duration Slider">
-                                <rect key="frame" x="171" y="81" width="160" height="18"/>
+                                <rect key="frame" x="171" y="117" width="160" height="18"/>
                                 <sliderCell key="cell" controlSize="small" state="on" alignment="left" minValue="1" maxValue="5" doubleValue="4" tickMarkPosition="above" numberOfTickMarks="5" sliderType="linear" id="7tf-65-J41"/>
                                 <connections>
                                     <action selector="scrollDurationSliderChange:" target="iW5-CD-5OC" id="ILK-Vy-7ha"/>
                                 </connections>
                             </slider>
                             <textField wantsLayer="YES" focusRingType="none" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yLh-Cc-KrW" userLabel="Scroll Duration Input">
-                                <rect key="frame" x="339" y="79" width="62" height="22"/>
+                                <rect key="frame" x="339" y="115" width="62" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="22" id="miX-5f-zbG"/>
                                 </constraints>
@@ -1335,14 +1335,14 @@
                                 </connections>
                             </textField>
                             <stepper wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="d2K-LV-vnb" userLabel="Scroll Duration Stepper">
-                                <rect key="frame" x="409" y="80" width="13" height="20"/>
+                                <rect key="frame" x="409" y="116" width="13" height="20"/>
                                 <stepperCell key="cell" controlSize="mini" continuous="YES" alignment="left" increment="0.01" minValue="1" maxValue="5" doubleValue="3.8999999999999999" id="Z41-rW-yF2"/>
                                 <connections>
                                     <action selector="scrollDurationStepperChange:" target="iW5-CD-5OC" id="cvd-fX-2VH"/>
                                 </connections>
                             </stepper>
                             <textField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sat-Nx-2q9" userLabel="Scroll Duration Description">
-                                <rect key="frame" x="169" y="64" width="263" height="11"/>
+                                <rect key="frame" x="169" y="100" width="263" height="11"/>
                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Sets the duration of the scroll animation" id="DsD-EW-zCH">
                                     <font key="font" metaFont="miniSystem"/>
                                     <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
@@ -1359,8 +1359,80 @@
                                     <action selector="resetToDefaultClick:" target="iW5-CD-5OC" id="YH6-Nc-6jU"/>
                                 </connections>
                             </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hSc-Mo-Sc1">
+                                <rect key="frame" x="20" y="56" width="410" height="24"/>
+                                <buttonCell key="cell" type="push" title="Manage Hold-Scroll Shortcuts…" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hSc-Mo-Cel">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="manageHoldScrollClicked:" target="iW5-CD-5OC" id="hSc-Mo-Act"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pFc-Mo-Sc1">
+                                <rect key="frame" x="171" y="240" width="259" height="14"/>
+                                <buttonCell key="cell" type="check" title="Make precise scrolling the default — hold the Disable Smoothing key to temporarily enable smooth scrolling" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="off" inset="2" id="pFc-Mo-Cel">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="smallSystem"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="invertBlockKeyChanged:" target="iW5-CD-5OC" id="pFc-Mo-Act"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lpr-Mo-Sc1">
+                                <rect key="frame" x="171" y="220" width="259" height="14"/>
+                                <buttonCell key="cell" type="check" title="Modifier keys must be long-pressed to trigger (avoids accidental firing on Cmd+C etc.)" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="off" inset="2" id="lpr-Mo-Cel">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="smallSystem"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="modifierLongPressChanged:" target="iW5-CD-5OC" id="lpr-Mo-Act"/>
+                                </connections>
+                            </button>
+                            <button translatesAutoresizingMaskIntoConstraints="NO" id="hSt-Mo-Btn">
+                                <rect key="frame" x="430" y="206" width="18" height="18"/>
+                                <buttonCell key="cell" type="bevel" bezelStyle="helpButton" imagePosition="overlaps" alignment="center" borderStyle="border" inset="2" id="hSt-Mo-Cel">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="18" id="hSt-Mo-W"/>
+                                    <constraint firstAttribute="height" constant="18" id="hSt-Mo-H"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="stepHelpClicked:" target="iW5-CD-5OC" id="hSt-Mo-Act"/>
+                                </connections>
+                            </button>
+                            <button translatesAutoresizingMaskIntoConstraints="NO" id="hSp-Mo-Btn">
+                                <rect key="frame" x="430" y="152" width="18" height="18"/>
+                                <buttonCell key="cell" type="bevel" bezelStyle="helpButton" imagePosition="overlaps" alignment="center" borderStyle="border" inset="2" id="hSp-Mo-Cel">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="18" id="hSp-Mo-W"/>
+                                    <constraint firstAttribute="height" constant="18" id="hSp-Mo-H"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="speedHelpClicked:" target="iW5-CD-5OC" id="hSp-Mo-Act"/>
+                                </connections>
+                            </button>
+                            <button translatesAutoresizingMaskIntoConstraints="NO" id="hDu-Mo-Btn">
+                                <rect key="frame" x="430" y="98" width="18" height="18"/>
+                                <buttonCell key="cell" type="bevel" bezelStyle="helpButton" imagePosition="overlaps" alignment="center" borderStyle="border" inset="2" id="hDu-Mo-Cel">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="18" id="hDu-Mo-W"/>
+                                    <constraint firstAttribute="height" constant="18" id="hDu-Mo-H"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="durationHelpClicked:" target="iW5-CD-5OC" id="hDu-Mo-Act"/>
+                                </connections>
+                            </button>
                             <button translatesAutoresizingMaskIntoConstraints="NO" id="gxK-T9-rTz">
-                                <rect key="frame" x="357" y="464" width="18" height="18"/>
+                                <rect key="frame" x="357" y="500" width="18" height="18"/>
                                 <buttonCell key="cell" type="inline" bezelStyle="inline" image="NSIconViewTemplate" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Zby-Nv-Yli">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="smallSystemBold"/>
@@ -1374,7 +1446,7 @@
                                 </connections>
                             </button>
                             <button translatesAutoresizingMaskIntoConstraints="NO" id="W1h-Ae-pqa">
-                                <rect key="frame" x="332" y="433" width="18" height="18"/>
+                                <rect key="frame" x="332" y="469" width="18" height="18"/>
                                 <buttonCell key="cell" type="inline" bezelStyle="inline" image="NSIconViewTemplate" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Ef3-I4-vMD">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="smallSystem"/>
@@ -1388,7 +1460,7 @@
                                 </connections>
                             </button>
                             <button translatesAutoresizingMaskIntoConstraints="NO" id="djY-Oz-zp6">
-                                <rect key="frame" x="295" y="370" width="24" height="24"/>
+                                <rect key="frame" x="295" y="406" width="24" height="24"/>
                                 <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="NSStopProgressFreestandingTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" inset="2" id="mi7-t8-cQj">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -1402,7 +1474,7 @@
                                 </connections>
                             </button>
                             <button translatesAutoresizingMaskIntoConstraints="NO" id="eok-QS-9XH">
-                                <rect key="frame" x="295" y="317" width="24" height="24"/>
+                                <rect key="frame" x="295" y="353" width="24" height="24"/>
                                 <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="NSStopProgressFreestandingTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" inset="2" id="l8l-Zf-t0U">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -1416,7 +1488,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EFO-dA-m6V">
-                                <rect key="frame" x="171" y="370" width="120" height="24"/>
+                                <rect key="frame" x="171" y="406" width="120" height="24"/>
                                 <buttonCell key="cell" type="push" title="Disabled" bezelStyle="rounded" alignment="left" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="2dJ-u6-vHd">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -1429,7 +1501,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ViJ-9q-G0Y">
-                                <rect key="frame" x="171" y="317" width="120" height="24"/>
+                                <rect key="frame" x="171" y="353" width="120" height="24"/>
                                 <buttonCell key="cell" type="push" title="Disabled" bezelStyle="rounded" alignment="left" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="zTP-iu-A6h">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -1443,7 +1515,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="tqn-BT-jaW">
-                                <rect key="frame" x="171" y="264" width="120" height="24"/>
+                                <rect key="frame" x="171" y="300" width="120" height="24"/>
                                 <buttonCell key="cell" type="push" title="Disabled" bezelStyle="rounded" alignment="left" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Ky0-gH-I3A">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -1457,7 +1529,7 @@
                                 </connections>
                             </button>
                             <button translatesAutoresizingMaskIntoConstraints="NO" id="Lsg-Nt-2NN">
-                                <rect key="frame" x="295" y="264" width="24" height="24"/>
+                                <rect key="frame" x="295" y="300" width="24" height="24"/>
                                 <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="NSStopProgressFreestandingTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" inset="2" id="Eqp-qB-x3d">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -1494,7 +1566,22 @@
                             <constraint firstItem="ViJ-9q-G0Y" firstAttribute="top" secondItem="45l-vw-E0o" secondAttribute="bottom" constant="12" id="CWj-4B-i0a"/>
                             <constraint firstItem="eok-QS-9XH" firstAttribute="leading" secondItem="ViJ-9q-G0Y" secondAttribute="trailing" constant="4" id="DLe-IX-hra"/>
                             <constraint firstItem="tqn-BT-jaW" firstAttribute="top" secondItem="gSx-dp-Tvn" secondAttribute="bottom" constant="12" id="DQb-03-D0u"/>
-                            <constraint firstItem="iLA-i9-HEO" firstAttribute="top" secondItem="1eQ-Un-ZLh" secondAttribute="bottom" constant="20" id="DtP-Yi-Uyt"/>
+                            <constraint firstItem="pFc-Mo-Sc1" firstAttribute="top" secondItem="1eQ-Un-ZLh" secondAttribute="bottom" constant="10" id="pFc-Mo-Top"/>
+                            <constraint firstItem="pFc-Mo-Sc1" firstAttribute="leading" secondItem="tqn-BT-jaW" secondAttribute="leading" id="pFc-Mo-Lea"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="pFc-Mo-Sc1" secondAttribute="trailing" constant="20" id="pFc-Mo-Tra"/>
+                            <constraint firstItem="lpr-Mo-Sc1" firstAttribute="top" secondItem="pFc-Mo-Sc1" secondAttribute="bottom" constant="6" id="lpr-Mo-Top"/>
+                            <constraint firstItem="lpr-Mo-Sc1" firstAttribute="leading" secondItem="tqn-BT-jaW" secondAttribute="leading" id="lpr-Mo-Lea"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="lpr-Mo-Sc1" secondAttribute="trailing" constant="20" id="lpr-Mo-Tra"/>
+                            <constraint firstItem="iLA-i9-HEO" firstAttribute="top" secondItem="lpr-Mo-Sc1" secondAttribute="bottom" constant="16" id="DtP-Yi-Uyt"/>
+                            <constraint firstItem="hSt-Mo-Btn" firstAttribute="centerY" secondItem="TU2-J4-KYA" secondAttribute="centerY" id="hSt-Mo-Cy"/>
+                            <constraint firstItem="hSt-Mo-Btn" firstAttribute="leading" secondItem="a9X-MM-XsO" secondAttribute="trailing" constant="6" id="hSt-Mo-Le"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="hSt-Mo-Btn" secondAttribute="trailing" constant="4" id="hSt-Mo-Tr"/>
+                            <constraint firstItem="hSp-Mo-Btn" firstAttribute="centerY" secondItem="YRx-cZ-Ol5" secondAttribute="centerY" id="hSp-Mo-Cy"/>
+                            <constraint firstItem="hSp-Mo-Btn" firstAttribute="leading" secondItem="S6c-kz-cql" secondAttribute="trailing" constant="6" id="hSp-Mo-Le"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="hSp-Mo-Btn" secondAttribute="trailing" constant="4" id="hSp-Mo-Tr"/>
+                            <constraint firstItem="hDu-Mo-Btn" firstAttribute="centerY" secondItem="ILS-hD-J9N" secondAttribute="centerY" id="hDu-Mo-Cy"/>
+                            <constraint firstItem="hDu-Mo-Btn" firstAttribute="leading" secondItem="d2K-LV-vnb" secondAttribute="trailing" constant="6" id="hDu-Mo-Le"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="hDu-Mo-Btn" secondAttribute="trailing" constant="4" id="hDu-Mo-Tr"/>
                             <constraint firstAttribute="trailing" secondItem="JjW-7S-QNG" secondAttribute="trailing" constant="20" id="Dyz-xE-zke"/>
                             <constraint firstItem="djY-Oz-zp6" firstAttribute="leading" secondItem="EFO-dA-m6V" secondAttribute="trailing" constant="4" id="E28-7d-NeK"/>
                             <constraint firstItem="TU2-J4-KYA" firstAttribute="centerY" secondItem="zKw-pT-YRj" secondAttribute="centerY" id="E4k-rd-3SV"/>
@@ -1505,7 +1592,7 @@
                             <constraint firstItem="TU2-J4-KYA" firstAttribute="top" secondItem="iLA-i9-HEO" secondAttribute="bottom" constant="20" id="HFj-9b-fYI"/>
                             <constraint firstItem="aV7-KP-bgw" firstAttribute="leading" secondItem="Jsi-ke-bNZ" secondAttribute="leading" constant="20" id="Ii8-a4-cEO"/>
                             <constraint firstItem="S6c-kz-cql" firstAttribute="centerY" secondItem="fAk-N9-naX" secondAttribute="centerY" id="IrJ-lk-88B"/>
-                            <constraint firstItem="JjW-7S-QNG" firstAttribute="top" secondItem="sat-Nx-2q9" secondAttribute="bottom" constant="20" id="Iv6-67-bzY"/>
+                            <constraint firstItem="hSc-Mo-Sc1" firstAttribute="top" secondItem="sat-Nx-2q9" secondAttribute="bottom" constant="20" id="Iv6-67-bzY"/>
                             <constraint firstItem="ET3-bp-TfD" firstAttribute="leading" secondItem="TU2-J4-KYA" secondAttribute="leading" id="J2U-dT-yfG"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="W1h-Ae-pqa" secondAttribute="trailing" constant="69" id="Kd4-65-JB5"/>
                             <constraint firstItem="PIE-3y-0sa" firstAttribute="leading" secondItem="1Hp-EF-wSq" secondAttribute="leading" id="Kjj-Xk-NCY"/>
@@ -1534,6 +1621,9 @@
                             <constraint firstItem="YRx-cZ-Ol5" firstAttribute="leading" secondItem="fAk-N9-naX" secondAttribute="trailing" constant="15" id="geC-Vo-c6H"/>
                             <constraint firstItem="PIE-3y-0sa" firstAttribute="centerY" secondItem="aV7-KP-bgw" secondAttribute="centerY" id="gkh-p7-Xf5"/>
                             <constraint firstItem="tqn-BT-jaW" firstAttribute="leading" secondItem="EFO-dA-m6V" secondAttribute="leading" id="gnU-2h-l72"/>
+                            <constraint firstItem="hSc-Mo-Sc1" firstAttribute="leading" secondItem="Jsi-ke-bNZ" secondAttribute="leading" constant="20" id="hSc-Mo-Lea"/>
+                            <constraint firstItem="JjW-7S-QNG" firstAttribute="top" secondItem="hSc-Mo-Sc1" secondAttribute="bottom" constant="12" id="hSc-Mo-Top"/>
+                            <constraint firstAttribute="trailing" secondItem="hSc-Mo-Sc1" secondAttribute="trailing" constant="20" id="hSc-Mo-Tra"/>
                             <constraint firstItem="Lsg-Nt-2NN" firstAttribute="leading" secondItem="tqn-BT-jaW" secondAttribute="trailing" constant="4" id="hZe-UF-mZX"/>
                             <constraint firstItem="gxK-T9-rTz" firstAttribute="leading" secondItem="1Hp-EF-wSq" secondAttribute="trailing" constant="8" id="hl2-gp-Goo"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="gxK-T9-rTz" secondAttribute="trailing" constant="74" id="hn9-AF-A85"/>
@@ -1572,6 +1662,9 @@
                         <outlet property="dashKeyDelButton" destination="djY-Oz-zp6" id="OOJ-hd-KiK"/>
                         <outlet property="disableKeyBindButton" destination="tqn-BT-jaW" id="Ixz-Dg-J8J"/>
                         <outlet property="disableKeyDelButton" destination="Lsg-Nt-2NN" id="kve-01-kRl"/>
+                        <outlet property="manageHoldScrollButton" destination="hSc-Mo-Sc1" id="hSc-Mo-Out"/>
+                        <outlet property="invertBlockKeyCheckbox" destination="pFc-Mo-Sc1" id="pFc-Mo-Out"/>
+                        <outlet property="modifierLongPressCheckbox" destination="lpr-Mo-Sc1" id="lpr-Mo-Out"/>
                         <outlet property="resetToDefaultsButton" destination="JjW-7S-QNG" id="bxA-s3-U5j"/>
                         <outlet property="scrollDurationDescriptionLabel" destination="sat-Nx-2q9" id="JPP-VY-Tch"/>
                         <outlet property="scrollDurationInput" destination="yLh-Cc-KrW" id="KB1-tR-39d"/>
@@ -1595,7 +1688,7 @@
         <!--Adaptive Popover-->
         <scene sceneID="79I-rH-ZaI">
             <objects>
-                <viewController id="mUR-85-jNE" customClass="AdaptivePopover" customModule="Mos" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="mUR-85-jNE" customClass="AdaptivePopover" customModule="MyMos" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="Adm-9b-xST">
                         <rect key="frame" x="0.0" y="0.0" width="391" height="34"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1624,7 +1717,7 @@
         <!--Scroll Smooth Detail Settings Popover View Controller-->
         <scene sceneID="cWM-rm-1Zc">
             <objects>
-                <viewController id="6NY-mX-uto" customClass="ScrollSmoothDetailSettingsPopoverViewController" customModule="Mos" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="6NY-mX-uto" customClass="ScrollSmoothDetailSettingsPopoverViewController" customModule="MyMos" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="Ii6-1I-pb4">
                         <rect key="frame" x="0.0" y="0.0" width="215" height="118"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1697,7 +1790,7 @@
         <!--Preferences Scrolling With Application View Controller-->
         <scene sceneID="brY-DW-5LE">
             <objects>
-                <viewController storyboardIdentifier="scrollingWithApplication" id="lS3-AT-V8l" customClass="PreferencesScrollingWithApplicationViewController" customModule="Mos" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="scrollingWithApplication" id="lS3-AT-V8l" customClass="PreferencesScrollingWithApplicationViewController" customModule="MyMos" customModuleProvider="target" sceneMemberID="viewController">
                     <visualEffectView key="view" blendingMode="behindWindow" material="toolTip" state="active" id="Ta8-Xb-8AA">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="450"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1782,7 +1875,7 @@
         <!--About-->
         <scene sceneID="cHd-3e-zIv">
             <objects>
-                <viewController title="About" storyboardIdentifier="about" showSeguePresentationStyle="single" id="RfV-Ow-3mF" customClass="PreferencesAboutViewController" customModule="Mos" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="About" storyboardIdentifier="about" showSeguePresentationStyle="single" id="RfV-Ow-3mF" customClass="PreferencesAboutViewController" customModule="MyMos" customModuleProvider="target" sceneMemberID="viewController">
                     <visualEffectView key="view" blendingMode="behindWindow" material="toolTip" state="followsWindowActiveState" id="YL0-R0-moU">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="156"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1951,7 +2044,7 @@
         <!--Preferences Contributors View Controller-->
         <scene sceneID="eHC-0y-R7N">
             <objects>
-                <viewController id="zex-mK-IcT" customClass="PreferencesContributorsViewController" customModule="Mos" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="zex-mK-IcT" customClass="PreferencesContributorsViewController" customModule="MyMos" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="NbZ-BN-bEt">
                         <rect key="frame" x="0.0" y="0.0" width="470" height="331"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -2182,7 +2275,7 @@
         <!--Preferences Donate View Controller-->
         <scene sceneID="YcU-UJ-LwR">
             <objects>
-                <viewController storyboardIdentifier="donate" id="HYX-CS-fYi" customClass="PreferencesDonateViewController" customModule="Mos" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="donate" id="HYX-CS-fYi" customClass="PreferencesDonateViewController" customModule="MyMos" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" misplaced="YES" id="NWm-eD-Q0k">
                         <rect key="frame" x="0.0" y="0.0" width="701" height="691"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -2334,7 +2427,7 @@
         <!--Monitor-->
         <scene sceneID="hIz-AP-VOD">
             <objects>
-                <viewController id="XfG-lQ-9wD" userLabel="Monitor" customClass="MonitorViewController" customModule="Mos" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="XfG-lQ-9wD" userLabel="Monitor" customClass="MonitorViewController" customModule="MyMos" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
                         <rect key="frame" x="0.0" y="0.0" width="1100" height="574"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -2739,7 +2832,7 @@ mouseEventWindowUnderMousePointerThatCanHandleThisEvent: 0.0</string>
         <!--Adaptive Popover-->
         <scene sceneID="V22-gr-sOZ">
             <objects>
-                <viewController id="3aa-uW-Wet" customClass="AdaptivePopover" customModule="Mos" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="3aa-uW-Wet" customClass="AdaptivePopover" customModule="MyMos" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="Yv2-eG-rK5">
                         <rect key="frame" x="0.0" y="0.0" width="317" height="34"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2768,7 +2861,7 @@ mouseEventWindowUnderMousePointerThatCanHandleThisEvent: 0.0</string>
         <!--Window Controller-->
         <scene sceneID="917-oY-KTN">
             <objects>
-                <windowController storyboardIdentifier="introductionWindowController" id="JQz-eM-H89" customClass="IntroductionWindowController" customModule="Mos" customModuleProvider="target" sceneMemberID="viewController">
+                <windowController storyboardIdentifier="introductionWindowController" id="JQz-eM-H89" customClass="IntroductionWindowController" customModule="MyMos" customModuleProvider="target" sceneMemberID="viewController">
                     <window key="window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" titlebarAppearsTransparent="YES" id="dPc-qH-r55">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" fullSizeContentView="YES"/>
                         <rect key="contentRect" x="245" y="310" width="480" height="270"/>
@@ -2789,7 +2882,7 @@ mouseEventWindowUnderMousePointerThatCanHandleThisEvent: 0.0</string>
         <!--Introduction View Controller-->
         <scene sceneID="iPx-7G-EjS">
             <objects>
-                <viewController showSeguePresentationStyle="single" id="B4s-BX-GO5" customClass="IntroductionViewController" customModule="Mos" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController showSeguePresentationStyle="single" id="B4s-BX-GO5" customClass="IntroductionViewController" customModule="MyMos" customModuleProvider="target" sceneMemberID="viewController">
                     <visualEffectView key="view" appearanceType="inheritedVibrantLight" blendingMode="behindWindow" material="popover" state="active" id="IYZ-aS-pu3">
                         <rect key="frame" x="0.0" y="0.0" width="340" height="452"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -2805,7 +2898,7 @@ mouseEventWindowUnderMousePointerThatCanHandleThisEvent: 0.0</string>
                                         </constraints>
                                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="sparkle" id="c8O-9Q-q6B"/>
                                     </imageView>
-                                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yOZ-8X-9SU" userLabel="AppIcon" customClass="DraggingImageView" customModule="Mos" customModuleProvider="target">
+                                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yOZ-8X-9SU" userLabel="AppIcon" customClass="DraggingImageView" customModule="MyMos" customModuleProvider="target">
                                         <rect key="frame" x="38" y="38" width="125" height="125"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="125" id="Eed-v0-yYr"/>
@@ -2987,7 +3080,7 @@ Remove Mos from the list first, and then re-add Mos to authorize. (You can also 
         <!--Scroll Reverse Detail Settings Popover View Controller-->
         <scene sceneID="Bqh-wS-uAC">
             <objects>
-                <viewController id="LBo-ML-z89" customClass="ScrollReverseDetailSettingsPopoverViewController" customModule="Mos" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="LBo-ML-z89" customClass="ScrollReverseDetailSettingsPopoverViewController" customModule="MyMos" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="WvQ-ub-c9c">
                         <rect key="frame" x="0.0" y="0.0" width="215" height="78"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -3057,6 +3150,7 @@ Remove Mos from the list first, and then re-add Mos to authorize. (You can also 
         <image name="SF.lasso.badge.sparkles" width="135" height="135"/>
         <image name="SF.person.crop.circle.dashed" width="135" height="135"/>
         <image name="SF.scribble" width="100" height="86"/>
+        <image name="SF.speedometer" width="135" height="135"/>
         <image name="WechatpayLogo" width="442" height="150"/>
         <image name="WechatpayQR" width="256" height="256"/>
         <image name="drag-arrow" width="240" height="240"/>

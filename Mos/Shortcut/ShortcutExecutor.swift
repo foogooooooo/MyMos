@@ -276,6 +276,15 @@ class ShortcutExecutor {
 
     // MARK: - Custom Binding Execution
 
+    /// 一次性发出 "press + release" 的合成键盘事件 (含修饰键).
+    /// 用于场景: ScrollCore 的 hold-scroll binding 在每个滚轮 notch 模拟一次按键.
+    /// 内部走和按钮绑定相同的 executeCustom 路径, 自动盖 syntheticCustom marker
+    /// 防止反射进 hotkey tap.
+    func emitCustomKeystroke(code: UInt16, modifiers: UInt64) {
+        executeCustom(code: code, modifiers: modifiers, phase: .down)
+        executeCustom(code: code, modifiers: modifiers, phase: .up)
+    }
+
     /// 执行自定义绑定 (1:1 down/up 映射)
     private func executeCustom(code: UInt16, modifiers: UInt64, phase: InputPhase) {
         guard let source = CGEventSource(stateID: .hidSystemState) else { return }

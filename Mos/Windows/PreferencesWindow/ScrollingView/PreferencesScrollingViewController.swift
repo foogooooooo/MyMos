@@ -33,7 +33,11 @@ class PreferencesScrollingViewController: NSViewController, ScrollOptionsContext
     @IBOutlet weak var scrollDurationStepper: NSStepper!
     @IBOutlet weak var scrollDurationDescriptionLabel: NSTextField?
     @IBOutlet weak var resetToDefaultsButton: NSButton!
+    @IBOutlet weak var manageHoldScrollButton: NSButton?
+    @IBOutlet weak var invertBlockKeyCheckbox: NSButton?
+    @IBOutlet weak var modifierLongPressCheckbox: NSButton?
     var resetButtonHeightConstraint: NSLayoutConstraint?
+    private var helpPopover: NSPopover?
     // Constants
     let DefaultConfigForCompare = OPTIONS_SCROLL_DEFAULT()
     private var scrollDurationDescriptionDefaultText: String?
@@ -44,6 +48,8 @@ class PreferencesScrollingViewController: NSViewController, ScrollOptionsContext
     // KeyRecorder for custom hotkey recording
     private let keyRecorder = KeyRecorder()
     private weak var currentRecordingPopup: NSButton?
+    // 自定义 hold-scroll 绑定 sheet (持有引用避免 sheet 关闭后被释放)
+    private var holdScrollWindowController: HoldScrollBindingsWindowController?
 
     override func viewDidLoad() {
         // 禁止自动 Focus
@@ -56,8 +62,75 @@ class PreferencesScrollingViewController: NSViewController, ScrollOptionsContext
         scrollDurationDescriptionDefaultText = scrollDurationDescriptionLabel?.stringValue
         // 设置 KeyRecorder 代理
         keyRecorder.delegate = self
+        // storyboard 里这几个新控件的标题是英文源, runtime 用 NSLocalizedString 覆盖.
+        // (避免和 Localizable.xcstrings 现有 key 产生 Swift 符号冲突)
+        invertBlockKeyCheckbox?.title = NSLocalizedString(
+            "Make precise scrolling the default — hold the Disable Smoothing key to temporarily enable smooth scrolling",
+            comment: "Invert block key checkbox label"
+        )
+        modifierLongPressCheckbox?.title = NSLocalizedString(
+            "Modifier keys must be long-pressed to trigger (avoids accidental firing on Cmd+C etc.)",
+            comment: "Modifier long-press checkbox label"
+        )
+        manageHoldScrollButton?.title = NSLocalizedString(
+            "Manage Hold-Scroll Shortcuts",
+            comment: "Hold-scroll bindings sheet title"
+        ) + "…"
         // 读取设置
         syncViewWithOptions()
+    }
+
+    // MARK: - Help popovers for the three sliders / precision-first checkbox
+
+    @IBAction func stepHelpClicked(_ sender: NSButton) {
+        sender.helpTitle = NSLocalizedString("Min Step (Per Notch)", comment: "Help title: step")
+        sender.helpBody = NSLocalizedString(
+            "How far the page moves on a single wheel notch — the minimum scroll distance per click.\n\nLarger values: each click of the wheel moves the page more (snappier, jumpier).\nSmaller values: each click moves less (finer, slower).\n\nThink of it as the floor amount for one wheel tick before any smoothing easing kicks in.",
+            comment: "Help body: step"
+        )
+        helpPopover = ScrollHelp.showOrTogglePopover(from: sender, current: helpPopover)
+    }
+
+    @IBAction func speedHelpClicked(_ sender: NSButton) {
+        sender.helpTitle = NSLocalizedString("Speed Gain", comment: "Help title: speed")
+        sender.helpBody = NSLocalizedString(
+            "How much momentum the scroll picks up when you keep scrolling.\n\nLarger values: continuous scrolling accelerates faster — flicking the wheel sends the page further.\nSmaller values: each notch contributes the same amount; no acceleration.\n\nUse it to dial in how quickly long pages fly past when you spin the wheel.",
+            comment: "Help body: speed"
+        )
+        helpPopover = ScrollHelp.showOrTogglePopover(from: sender, current: helpPopover)
+    }
+
+    @IBAction func durationHelpClicked(_ sender: NSButton) {
+        sender.helpTitle = NSLocalizedString("Duration", comment: "Help title: duration")
+        sender.helpBody = NSLocalizedString(
+            "How long the smooth-scroll easing animation lasts after each notch.\n\nLarger values: the page glides on after you stop (longer trailing motion, more trackpad-feel).\nSmaller values: motion stops quickly when you stop scrolling (snappier).\n\nThis only applies when Smooth Scrolling is enabled.",
+            comment: "Help body: duration"
+        )
+        helpPopover = ScrollHelp.showOrTogglePopover(from: sender, current: helpPopover)
+    }
+
+    // MARK: - Precision-first mode
+
+    @IBAction func invertBlockKeyChanged(_ sender: NSButton) {
+        getTargetApplicationScrollOptions().invertBlockKey = sender.state == .on
+    }
+
+    @IBAction func modifierLongPressChanged(_ sender: NSButton) {
+        getTargetApplicationScrollOptions().modifierHotkeyLongPress = sender.state == .on
+    }
+
+    @IBAction func manageHoldScrollClicked(_ sender: NSButton) {
+        let controller: HoldScrollBindingsWindowController
+        if let app = currentTargetApplication {
+            controller = HoldScrollBindingsWindowController(application: app)
+        } else {
+            controller = HoldScrollBindingsWindowController()
+        }
+        holdScrollWindowController = controller
+        guard let parentWindow = view.window, let sheetWindow = controller.window else { return }
+        parentWindow.beginSheet(sheetWindow) { [weak self] _ in
+            self?.holdScrollWindowController = nil
+        }
     }
 
     override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
@@ -200,6 +273,14 @@ extension PreferencesScrollingViewController {
         // 翻转
         scrollReverseCheckBox.state = NSControl.StateValue(rawValue: scroll.reverse ? 1 : 0)
         scrollReverseCheckBox.isEnabled = isNotInherit
+        // 自定义"按住键 + 滚动"入口按钮
+        manageHoldScrollButton?.isEnabled = isNotInherit
+        // 精确滚动优先 checkbox
+        invertBlockKeyCheckbox?.state = scroll.invertBlockKey ? .on : .off
+        invertBlockKeyCheckbox?.isEnabled = isNotInherit
+        // 修饰键长按生效 checkbox
+        modifierLongPressCheckbox?.state = scroll.modifierHotkeyLongPress ? .on : .off
+        modifierLongPressCheckbox?.isEnabled = isNotInherit
         // 加速键
         updateHotkeyButton(dashKeyBindButton, delButton: dashKeyDelButton, hotkey: scroll.dash, enabled: isNotInherit)
         // 转换键

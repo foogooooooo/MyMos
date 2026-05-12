@@ -36,6 +36,9 @@ struct OptionItem {
         static let SmoothSimTrackpad = "smoothSimTrackpad"
         static let SmoothVertical = "smoothVertical"
         static let SmoothHorizontal = "smoothHorizontal"
+        static let HoldScrollBindings = "holdScrollBindings"
+        static let InvertBlockKey = "invertBlockKey"
+        static let ModifierHotkeyLongPress = "modifierHotkeyLongPress"
     }
 
     struct Button {
@@ -146,6 +149,9 @@ extension Options {
         } else {
             scroll.smoothHorizontal = UserDefaults.standard.bool(forKey: OptionItem.Scroll.SmoothHorizontal)
         }
+        scroll.holdScrollBindings = loadHoldScrollBindings(forKey: OptionItem.Scroll.HoldScrollBindings)
+        scroll.invertBlockKey = UserDefaults.standard.bool(forKey: OptionItem.Scroll.InvertBlockKey)
+        scroll.modifierHotkeyLongPress = UserDefaults.standard.bool(forKey: OptionItem.Scroll.ModifierHotkeyLongPress)
         // 按钮绑定
         buttons.binding = loadButtonsData()
         ButtonUtils.shared.invalidateCache()
@@ -195,6 +201,9 @@ extension Options {
             UserDefaults.standard.set(scroll.smoothSimTrackpad, forKey: OptionItem.Scroll.SmoothSimTrackpad)
             UserDefaults.standard.set(scroll.smoothVertical, forKey: OptionItem.Scroll.SmoothVertical)
             UserDefaults.standard.set(scroll.smoothHorizontal, forKey: OptionItem.Scroll.SmoothHorizontal)
+            saveHoldScrollBindings(scroll.holdScrollBindings, forKey: OptionItem.Scroll.HoldScrollBindings)
+            UserDefaults.standard.set(scroll.invertBlockKey, forKey: OptionItem.Scroll.InvertBlockKey)
+            UserDefaults.standard.set(scroll.modifierHotkeyLongPress, forKey: OptionItem.Scroll.ModifierHotkeyLongPress)
             // 应用
             UserDefaults.standard.set(application.allowlist, forKey: OptionItem.Application.Allowlist)
             if let applicationsData = application.applications.json() {
@@ -326,6 +335,30 @@ extension Options {
             UserDefaults.standard.set(data, forKey: key)
         } catch {
             NSLog("Failed to encode ScrollHotkey for \(key): \(error), skipping save")
+        }
+    }
+
+    // 加载 / 保存自定义 hold-scroll 绑定列表 (JSON encoded array)
+    private func loadHoldScrollBindings(forKey key: String) -> [HoldScrollBinding] {
+        guard let data = UserDefaults.standard.object(forKey: key) as? Data else { return [] }
+        do {
+            return try decoder.decode([HoldScrollBinding].self, from: data)
+        } catch {
+            NSLog("Failed to decode HoldScrollBindings for \(key): \(error), using empty")
+            return []
+        }
+    }
+
+    private func saveHoldScrollBindings(_ bindings: [HoldScrollBinding], forKey key: String) {
+        if bindings.isEmpty {
+            UserDefaults.standard.removeObject(forKey: key)
+            return
+        }
+        do {
+            let data = try encoder.encode(bindings)
+            UserDefaults.standard.set(data, forKey: key)
+        } catch {
+            NSLog("Failed to encode HoldScrollBindings for \(key): \(error), skipping save")
         }
     }
 

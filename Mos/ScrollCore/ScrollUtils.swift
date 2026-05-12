@@ -182,4 +182,15 @@ class ScrollUtils {
             return Options.shared.scroll.block
         }
     }
+    /// 取得当前生效的「按住 + 滚动 → 模拟键盘」绑定列表 (全局 / 每应用 override).
+    /// 与 dash/toggle/block 一样, 当 application.inherit == true 时回退到全局.
+    /// 注意空数组不回退 — 用户在 per-app 里清空所有 binding 是有效的语义.
+    func optionsHoldScrollBindings(application: Application?) -> [HoldScrollBinding] {
+        if let targetApplication = application {
+            return targetApplication.inherit ? Options.shared.scroll.holdScrollBindings
+                                              : targetApplication.scroll.holdScrollBindings
+        } else {
+            return Options.shared.scroll.holdScrollBindings
+        }
+    }
 }

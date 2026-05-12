@@ -177,6 +177,26 @@ class OPTIONS_SCROLL_DEFAULT: Codable {
     var durationBeforeSimTrackpadLock: Double? {
         didSet {Options.shared.saveOptions()}
     }
+    /// 用户自定义的 "按住触发键 + 滚动 → 模拟键盘按键" 绑定列表.
+    /// 与 dash/toggle/block 一样, 全局 + 每应用 override 都通过 OPTIONS_SCROLL_DEFAULT
+    /// 的副本 (Application.scroll) 自动支持.
+    var holdScrollBindings: [HoldScrollBinding] = [] {
+        didSet { Options.shared.saveOptions() }
+    }
+    /// 反向"禁用键"语义: 默认精确滚动, 按住禁用键才临时启用平滑.
+    /// false (默认) = 原版行为 (平时平滑, 按住禁用键 → 精确).
+    /// true = 反向 (平时精确, 按住禁用键 → 平滑).
+    var invertBlockKey: Bool = false {
+        didSet { Options.shared.saveOptions() }
+    }
+    /// 修饰键长按生效: dash/toggle/block 三个热键如果绑的是 modifier (⌘⌥⌃⇧),
+    /// 默认会在按下瞬间就触发, 这会让 Cmd+C 这种正常快捷键意外触发 Mos 热键.
+    /// 开启后, 修饰键必须连续按住超过阈值时间才触发 (快速点按不算).
+    var modifierHotkeyLongPress: Bool = false {
+        didSet { Options.shared.saveOptions() }
+    }
+    /// 长按阈值 (秒). 250ms 足以区分有意按住 vs 快速点按 Cmd+C 这种.
+    static let modifierHotkeyLongPressThresholdSec: TimeInterval = 0.25
     // 工具
     static func generateDurationTransition(with duration: Double) -> Double {
         // 上界, 此处需要与界面的 Slider 上界保持同步, 并添加 0.2 的偏移令结果不为 0
@@ -204,7 +224,10 @@ extension OPTIONS_SCROLL_DEFAULT: Equatable {
             l.smoothSimTrackpad == r.smoothSimTrackpad &&
             l.smoothVertical == r.smoothVertical &&
             l.smoothHorizontal == r.smoothHorizontal &&
-            l.durationBeforeSimTrackpadLock == r.durationBeforeSimTrackpadLock
+            l.durationBeforeSimTrackpadLock == r.durationBeforeSimTrackpadLock &&
+            l.holdScrollBindings == r.holdScrollBindings &&
+            l.invertBlockKey == r.invertBlockKey &&
+            l.modifierHotkeyLongPress == r.modifierHotkeyLongPress
         )
     }
 }

@@ -30,6 +30,16 @@ class ScrollCore {
     private var mosDashActionCount = 0
     private var mosToggleActionCount = 0
     private var mosBlockActionCount = 0
+    /// 当前被按住的自定义 hold-scroll binding 的 id 集合.
+    /// hotkey tap 与 scroll tap 都跑在主 RunLoop 上, 跟 dash/toggle/block 一样
+    /// 是单线程访问, 不需要加锁.
+    var heldHoldScrollBindingIds: Set<UUID> = []
+    private var appDeactivateObserver: NSObjectProtocol?
+    /// 修饰键长按延迟: 在 modifierHotkeyLongPress 开启 + 热键是 modifier 时,
+    /// 按下不会立刻激活 dash/toggle/block, 必须连续按住超过阈值才激活.
+    /// timer 在 RunLoop.main, 跟 event tap 一个线程, 状态无锁.
+    private var longPressTimers: [ScrollRole: Timer] = [:]
+    private var longPressFired: [ScrollRole: Bool] = [:]
     // 例外应用数据
     var application: Application?
     var currentApplication: Application? // 用于区分按下热键及抬起时的作用目标
@@ -91,6 +101,25 @@ class ScrollCore {
         let targetRunningApplication = ScrollUtils.shared.getRunningApplication(from: event)
         // 获取列表中应用程序的列外设置信息
         ScrollCore.shared.application = ScrollUtils.shared.getTargetApplication(from: targetRunningApplication)
+
+        // 自定义 hold-scroll: 用户按住触发键时, 滚轮事件被消费并模拟键盘按键
+        if !ScrollCore.shared.heldHoldScrollBindingIds.isEmpty {
+            let bindings = ScrollUtils.shared.optionsHoldScrollBindings(application: ScrollCore.shared.application)
+            let scrollFix = scrollEvent.Y.scrollFix  // 整数 wheel notch 计数, 负=向下, 正=向上
+            if scrollFix != 0 {
+                let notches = Int(abs(scrollFix))
+                let isUp = scrollFix > 0
+                for binding in bindings where ScrollCore.shared.heldHoldScrollBindingIds.contains(binding.id) {
+                    guard let key = isUp ? binding.upKeystroke : binding.downKeystroke else { continue }
+                    for _ in 0..<notches {
+                        ShortcutExecutor.shared.emitCustomKeystroke(code: key.code, modifiers: UInt64(key.modifiers))
+                    }
+                }
+            }
+            // 整段事件流 (含 scrollFix=0 的平滑残余) 都吃掉, 防止"模拟键的同时还在滚"
+            return nil
+        }
+
         // 平滑/翻转
         var enableSmooth = false,
             enableSmoothVertical = false,
@@ -100,17 +129,24 @@ class ScrollCore {
         var step = Options.shared.scroll.step,
             speed = Options.shared.scroll.speed,
             duration = Options.shared.scroll.durationTransition
+        // 反向"禁用键"语义: 勾选后 blockSmooth 的作用反过来 — 默认精确, 按住才平滑.
+        // 在送进 Application.isSmooth(_:) / global 平滑判定前先 XOR 翻转一次,
+        // 下游代码 (含 Application 模型) 完全不用改.
+        let invertBlock = Options.shared.scroll.invertBlockKey
+        let effectiveBlockSmooth = invertBlock
+            ? !ScrollCore.shared.blockSmooth
+            : ScrollCore.shared.blockSmooth
         if let targetApplication = ScrollCore.shared.application {
-            enableSmooth = targetApplication.isSmooth(ScrollCore.shared.blockSmooth)
-            enableSmoothVertical = targetApplication.isSmoothVertical(ScrollCore.shared.blockSmooth)
-            enableSmoothHorizontal = targetApplication.isSmoothHorizontal(ScrollCore.shared.blockSmooth)
+            enableSmooth = targetApplication.isSmooth(effectiveBlockSmooth)
+            enableSmoothVertical = targetApplication.isSmoothVertical(effectiveBlockSmooth)
+            enableSmoothHorizontal = targetApplication.isSmoothHorizontal(effectiveBlockSmooth)
             enableReverseVertical = targetApplication.isReverseVertical()
             enableReverseHorizontal = targetApplication.isReverseHorizontal()
             step = targetApplication.getStep()
             speed = targetApplication.getSpeed()
             duration = targetApplication.getDuration()
         } else if !Options.shared.application.allowlist {
-            enableSmooth = Options.shared.scroll.smooth && !ScrollCore.shared.blockSmooth
+            enableSmooth = Options.shared.scroll.smooth && !effectiveBlockSmooth
             enableSmoothVertical = enableSmooth && Options.shared.scroll.smoothVertical
             enableSmoothHorizontal = enableSmooth && Options.shared.scroll.smoothHorizontal
             let allowReverse = Options.shared.scroll.reverse
@@ -346,18 +382,29 @@ class ScrollCore {
 
         // Dash
         if let isPressed = checkAndUpdateHotkey(dashHotkey, keyHeld: &ScrollCore.shared.dashKeyHeld) {
-            ScrollCore.shared.dashKeyHeld = isPressed
-            ScrollCore.shared.refreshDashState()
+            ScrollCore.shared.handleHotkeyTransition(role: .dash, hotkey: dashHotkey, isPressed: isPressed)
         }
         // Toggle
         if let isPressed = checkAndUpdateHotkey(toggleHotkey, keyHeld: &ScrollCore.shared.toggleKeyHeld) {
-            ScrollCore.shared.toggleKeyHeld = isPressed
-            ScrollCore.shared.refreshToggleState()
+            ScrollCore.shared.handleHotkeyTransition(role: .toggle, hotkey: toggleHotkey, isPressed: isPressed)
         }
         // Block
         if let isPressed = checkAndUpdateHotkey(blockHotkey, keyHeld: &ScrollCore.shared.blockKeyHeld) {
-            ScrollCore.shared.blockKeyHeld = isPressed
-            ScrollCore.shared.refreshBlockState()
+            ScrollCore.shared.handleHotkeyTransition(role: .block, hotkey: blockHotkey, isPressed: isPressed)
+        }
+
+        // 自定义 hold-scroll bindings: 每个 binding 独立维护按下状态.
+        // checkAndUpdateHotkey 需要 inout Bool, 这里用一个本地变量从 Set 读出 / 写回.
+        let holdBindings = ScrollUtils.shared.optionsHoldScrollBindings(application: ScrollCore.shared.application)
+        for binding in holdBindings {
+            var bindingHeld = ScrollCore.shared.heldHoldScrollBindingIds.contains(binding.id)
+            if let isPressed = checkAndUpdateHotkey(binding.trigger, keyHeld: &bindingHeld) {
+                if isPressed {
+                    ScrollCore.shared.heldHoldScrollBindingIds.insert(binding.id)
+                } else {
+                    ScrollCore.shared.heldHoldScrollBindingIds.remove(binding.id)
+                }
+            }
         }
 
         // 处理抬起时焦点 App 变化
@@ -368,6 +415,8 @@ class ScrollCore {
             ScrollCore.shared.dashKeyHeld = false
             ScrollCore.shared.toggleKeyHeld = false
             ScrollCore.shared.blockKeyHeld = false
+            ScrollCore.shared.heldHoldScrollBindingIds.removeAll()
+            ScrollCore.shared.cancelAllLongPressTimers()
             ScrollCore.shared.refreshDashState()
             ScrollCore.shared.refreshToggleState()
             ScrollCore.shared.refreshBlockState()
@@ -376,6 +425,66 @@ class ScrollCore {
         }
         // 不返回原始事件
         return nil
+    }
+
+    // MARK: - 修饰键长按延迟激活
+
+    /// hotkey 状态转换入口. 如果热键是修饰键 + 用户开启了 modifierHotkeyLongPress,
+    /// 按下不会立刻激活, 必须连续按住超过阈值才会激活.
+    /// 这避免了把 ⌘ 绑成 dash/toggle/block 后 Cmd+C 意外触发 Mos 模式.
+    private func handleHotkeyTransition(role: ScrollRole, hotkey: ScrollHotkey?, isPressed: Bool) {
+        let shouldDefer = Options.shared.scroll.modifierHotkeyLongPress
+            && (hotkey?.isModifierKey ?? false)
+        if !shouldDefer {
+            applyHotkeyState(role: role, held: isPressed)
+            return
+        }
+        if isPressed {
+            // 已在等同一个 role 的 timer, 不要重新 schedule.
+            // (flagsChanged 重复触发: Cmd 按住时 flagsChanged 可能多次, isPressed 一直 true)
+            if longPressTimers[role] != nil { return }
+            // 还没 fire 之前, 不修改 dash/toggle/blockKeyHeld 状态.
+            longPressFired[role] = false
+            let timer = Timer.scheduledTimer(
+                withTimeInterval: OPTIONS_SCROLL_DEFAULT.modifierHotkeyLongPressThresholdSec,
+                repeats: false
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.longPressFired[role] = true
+                self.longPressTimers[role] = nil
+                self.applyHotkeyState(role: role, held: true)
+            }
+            longPressTimers[role] = timer
+        } else {
+            // 释放: 取消 timer; 如果之前 timer 已经 fire 过, 现在要 release.
+            longPressTimers[role]?.invalidate()
+            longPressTimers[role] = nil
+            if longPressFired[role] == true {
+                applyHotkeyState(role: role, held: false)
+            }
+            longPressFired[role] = false
+        }
+    }
+
+    private func applyHotkeyState(role: ScrollRole, held: Bool) {
+        switch role {
+        case .dash:
+            dashKeyHeld = held
+            refreshDashState()
+        case .toggle:
+            toggleKeyHeld = held
+            refreshToggleState()
+        case .block:
+            blockKeyHeld = held
+            refreshBlockState()
+        }
+    }
+
+    /// 切走 app / disable() 时调用, 取消所有 pending 的 long-press timer.
+    fileprivate func cancelAllLongPressTimers() {
+        for (_, timer) in longPressTimers { timer.invalidate() }
+        longPressTimers.removeAll()
+        longPressFired.removeAll()
     }
 
     private func shouldDeferToMosScrollButtonBinding(_ event: CGEvent) -> Bool {
@@ -431,6 +540,18 @@ class ScrollCore {
         } catch {
             print("[ScrollCore] Create Interceptor failure: \(error)")
         }
+        // 兜底: 切走 app 时清空 hold-scroll 的 held 状态. 否则用户在 PS 里
+        // 按住触发键 → Cmd+Tab → 在 Safari 释放, hotkey tap 收不到 mouseUp,
+        // held set 会卡住, 后续 Safari 滚轮会被错误模拟键.
+        // ScrollCore 不是 NSObject, 用 block-based observer + token 管理.
+        appDeactivateObserver = NSWorkspace.shared.notificationCenter.addObserver(
+            forName: NSWorkspace.didDeactivateApplicationNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.heldHoldScrollBindingIds.removeAll()
+            self?.cancelAllLongPressTimers()
+        }
     }
     // 停止
     func disable() {
@@ -448,5 +569,11 @@ class ScrollCore {
         scrollEventInterceptor = nil
         hotkeyEventInterceptor = nil
         mouseEventInterceptor = nil
+        // 拆掉 app 切换 observer (enable 中安装的)
+        if let token = appDeactivateObserver {
+            NSWorkspace.shared.notificationCenter.removeObserver(token)
+            appDeactivateObserver = nil
+        }
+        heldHoldScrollBindingIds.removeAll()
     }
 }

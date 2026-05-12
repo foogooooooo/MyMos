@@ -91,6 +91,29 @@ struct ScrollHotkey: Codable, Equatable {
     }
 }
 
+// MARK: - HoldScrollBinding
+/// 用户自定义的"按住触发键 + 滚动滚轮 → 模拟键盘按键"绑定.
+/// 用于扩展 Mos 现有的 dash / toggle / block 三个固定 hold-scroll 热键, 让用户能为
+/// 任意场景 (典型如 Photoshop 调画笔大小 [/]) 配置自己的快捷键.
+struct HoldScrollBinding: Codable, Equatable, Identifiable {
+    let id: UUID
+    /// 必填: 按住的触发键 (鼠标侧键 / 键盘修饰键 / 普通键, 复用 ScrollHotkey 结构)
+    var trigger: ScrollHotkey
+    /// 选填: 向上滚动一格时模拟此键 (含修饰键). nil = 向上滚不做事
+    var upKeystroke: RecordedEvent?
+    /// 选填: 向下滚动一格时模拟此键 (含修饰键). nil = 向下滚不做事
+    var downKeystroke: RecordedEvent?
+
+    init(trigger: ScrollHotkey,
+         upKeystroke: RecordedEvent? = nil,
+         downKeystroke: RecordedEvent? = nil) {
+        self.id = UUID()
+        self.trigger = trigger
+        self.upKeystroke = upKeystroke
+        self.downKeystroke = downKeystroke
+    }
+}
+
 // MARK: - RecordedEvent
 /// 录制的事件数据 - 可序列化的事件信息 (完整版，包含修饰键)
 struct RecordedEvent: Codable, Equatable {

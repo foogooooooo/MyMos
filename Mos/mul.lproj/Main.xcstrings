@@ -5539,6 +5539,18 @@
         }
       }
     },
+    "hSc-Mo-Cel.title" : {
+      "comment" : "Class = \"NSButtonCell\"; title = \"Manage Hold-Scroll Shortcuts…\"; ObjectID = \"hSc-Mo-Cel\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Manage Hold-Scroll Shortcuts…"
+          }
+        }
+      }
+    },
     "I6G-zh-cEt.title" : {
       "comment" : "Class = \"NSTextFieldCell\"; title = \"Wang Yudong(@wyudong)\"; ObjectID = \"I6G-zh-cEt\";",
       "extractionState" : "extracted_with_value",
@@ -6672,6 +6684,18 @@
         }
       }
     },
+    "lpr-Mo-Cel.title" : {
+      "comment" : "Class = \"NSButtonCell\"; title = \"Modifier keys must be long-pressed to trigger (avoids accidental firing on Cmd+C etc.)\"; ObjectID = \"lpr-Mo-Cel\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Modifier keys must be long-pressed to trigger (avoids accidental firing on Cmd+C etc.)"
+          }
+        }
+      }
+    },
     "Luy-Tf-2zi.title" : {
       "comment" : "Class = \"NSTextFieldCell\"; title = \"*\"; ObjectID = \"Luy-Tf-2zi\";",
       "extractionState" : "extracted_with_value",
@@ -7363,6 +7387,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "模擬觸控板 (Beta)"
+          }
+        }
+      }
+    },
+    "pFc-Mo-Cel.title" : {
+      "comment" : "Class = \"NSButtonCell\"; title = \"Make precise scrolling the default — hold the Disable Smoothing key to temporarily enable smooth scrolling\"; ObjectID = \"pFc-Mo-Cel\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Make precise scrolling the default — hold the Disable Smoothing key to temporarily enable smooth scrolling"
           }
         }
       }
